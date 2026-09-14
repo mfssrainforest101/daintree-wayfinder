@@ -1,0 +1,30 @@
+# ── Set these two, then the ship runs with NO stops ──────────
+# 1) Cloudflare API token  (replaces the browser login)
+#    Get it: dash.cloudflare.com → My Profile → API Tokens → Create Token
+#    Use template "Edit Cloudflare Workers", then ADD these permissions:
+#        Account · Workers Scripts · Edit
+#        Account · Workers KV Storage · Edit
+#        Zone · Workers Routes · Edit           (for cairnswayfinder.com)
+#        Account · Account Settings · Read
+#    Scope it to your account + the cairnswayfinder.com zone.
+
+export CLOUDFLARE_API_TOKEN="paste-your-token-here"
+
+# 2) Reward signing secret (replaces the secret prompt). Generate one:
+#    node -e "console.log(require('crypto').randomBytes(24).toString('hex'))"
+export REWARD_SECRET="paste-a-long-random-string-here"
+
+# Optional — only if your token can see more than one account:
+# export CLOUDFLARE_ACCOUNT_ID="your-account-id"
+
+# Optional — keep it running (monitor + auto-redeploy on file change)
+# until you drop a STOP file:
+# export WATCH=1
+# ─────────────────────────────────────────────────────────────
+# Then:
+#   cd ship
+#   source SET-THESE-FIRST.txt
+#   ./ship-nonstop.sh https://cairnswayfinder.com
+#
+# To stop a WATCH run from another terminal:
+#   touch ship/site/STOP
