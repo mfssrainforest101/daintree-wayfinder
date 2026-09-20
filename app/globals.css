@@ -4,10 +4,29 @@
   margin: 0;
 }
 
+:root {
+  --bg: #081712;
+  --panel: #0f2419;
+  --panel-2: #13291f;
+  --card: #17332616;
+  --line: #234a37;
+  --line-soft: #1c3b2c;
+  --text: #eef3ea;
+  --muted: #9db2a3;
+  --muted-2: #6f8a7a;
+  --amber: #f2b84b;
+  --amber-dim: #c9973a;
+  --green: #3fae7a;
+  --danger: #e2705f;
+  --radius: 12px;
+  --sidebar-w: 372px;
+}
+
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
@@ -16,9 +35,491 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  color: var(--text);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ---------- Layout ---------- */
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.map-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.map-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.map-loading {
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 40%, #1231229 0%, var(--bg) 70%);
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
+  border-right: 1px solid var(--line-soft);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(150deg, var(--green), #0c4a30);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 1px #ffffff14;
+  flex-shrink: 0;
+}
+.brand-mark span {
+  width: 16px;
+  height: 16px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  background: var(--amber);
+  box-shadow: 0 0 0 3px #f2b84b33;
+}
+
+.brand h1 {
+  font-size: 1.12rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.brand p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.panel {
+  background: var(--panel-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.panel.grow {
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.panel-head h2 {
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.hint {
+  font-size: 0.68rem;
+  color: var(--muted-2);
+}
+
+/* ---------- Stats ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 2px;
+  background: var(--card);
+  border-radius: 9px;
+}
+.stat-value {
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: var(--text);
+}
+.stat-label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-2);
+}
+
+/* ---------- Segmented control ---------- */
+.segmented {
+  display: flex;
+  background: var(--card);
+  border-radius: 9px;
+  padding: 3px;
+  gap: 3px;
+}
+.seg {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 550;
+  padding: 7px 4px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.seg:hover {
+  color: var(--text);
+}
+.seg.active {
+  background: var(--green);
+  color: #04180f;
+}
+
+/* ---------- Action buttons ---------- */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.actions button {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 550;
+  padding: 9px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, opacity 0.15s;
+}
+.actions button:hover:not(:disabled) {
+  border-color: var(--green);
+  background: #1a3b2b;
+}
+.actions button.danger:hover:not(:disabled) {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- Waypoint list ---------- */
+.wp-list {
+  list-style: none;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 2px;
+}
+.wp-list li {
+  border-radius: 10px;
+  transition: box-shadow 0.12s;
+}
+.wp-list li.drag-over {
+  box-shadow: 0 0 0 2px var(--amber);
+}
+
+.wp-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  background: var(--card);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.wp-row:hover {
+  background: #193728;
+}
+.wp-row.selected {
+  border-color: var(--amber);
+  background: #1d3a2a;
+}
+
+.wp-index {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #04180f;
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+}
+.wp-row.selected .wp-index {
+  background: var(--amber);
+}
+
+.wp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+.wp-name {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 550;
+  text-align: left;
+  padding: 0;
+  cursor: text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wp-name-input {
+  background: #0b1f16;
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 550;
+  padding: 2px 6px;
+  width: 100%;
+  outline: none;
+}
+.wp-leg {
+  font-size: 0.7rem;
+  color: var(--amber);
+}
+.wp-coords {
+  font-size: 0.66rem;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-remove {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--muted-2);
+  font-size: 1.2rem;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+}
+.wp-remove:hover {
+  color: var(--danger);
+  background: #e2705f1f;
+}
+
+/* ---------- Empty ---------- */
+.empty {
+  text-align: center;
+  padding: 24px 10px;
+  color: var(--muted);
+}
+.empty-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.empty-sub {
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* ---------- POI chips ---------- */
+.poi-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.poi-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.74rem;
+  padding: 5px 9px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.poi-chip:hover {
+  border-color: var(--green);
+  background: #1a3b2b;
+}
+.poi-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.poi-beach .poi-dot {
+  background: #55c2d6;
+}
+.poi-rainforest .poi-dot {
+  background: #3fae7a;
+}
+.poi-village .poi-dot {
+  background: #f2b84b;
+}
+.poi-lookout .poi-dot {
+  background: #e2705f;
+}
+.poi-crossing .poi-dot {
+  background: #b98cf0;
+}
+
+.foot {
+  font-size: 0.68rem;
+  color: var(--muted-2);
+  text-align: center;
+  line-height: 1.5;
+  padding-top: 2px;
+}
+
+/* ---------- Map markers ---------- */
+.wp-marker {
+  width: 27px;
+  height: 27px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--green);
+  border: 2px solid #04180f;
+  box-shadow: 0 3px 8px #00000066;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.wp-num {
+  transform: rotate(45deg);
+  color: #04180f;
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1;
+}
+.wp-marker.is-selected {
+  background: var(--amber);
+  transform: rotate(-45deg) scale(1.18);
+  z-index: 2;
+}
+
+.poi-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #ffffffcc;
+  background: var(--green);
+  box-shadow: 0 2px 6px #00000055;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s;
+}
+.poi-marker:hover {
+  transform: scale(1.35);
+}
+.poi-beach {
+  background: #55c2d6;
+}
+.poi-rainforest {
+  background: #3fae7a;
+}
+.poi-village {
+  background: #f2b84b;
+}
+.poi-lookout {
+  background: #e2705f;
+}
+.poi-crossing {
+  background: #b98cf0;
+}
+
+/* ---------- MapLibre popup restyle ---------- */
+.maplibregl-popup-content {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-size: 0.76rem;
+  box-shadow: 0 6px 20px #00000066;
+}
+.maplibregl-popup-content span {
+  color: var(--muted);
+}
+.maplibregl-popup-tip {
+  display: none;
+}
+.maplibregl-ctrl-attrib {
+  font-size: 0.62rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  html,
+  body {
+    overflow: auto;
+  }
+  .layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    order: 2;
+  }
+  .map-wrap {
+    order: 1;
+    height: 58vh;
+    min-height: 320px;
+  }
 }
