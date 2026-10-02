@@ -6,19 +6,413 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: #0f1a0f;
+  color: #e8f5e8;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* ── Layout ── */
+.app-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+}
+
+.map-loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a2e1a;
+}
+
+.map-loading-inner {
+  text-align: center;
+  color: #86efac;
+}
+
+.map-loading-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ── Controls panel ── */
+.controls-panel {
+  width: 300px;
+  min-width: 280px;
+  background: #0f1a0f;
+  border-right: 1px solid #1e3a1e;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  padding: 0 0 2rem 0;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid #1e3a1e;
+  background: #0d170d;
+}
+
+.panel-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #86efac;
+  letter-spacing: -0.02em;
+}
+
+.panel-subtitle {
+  font-size: 0.75rem;
+  color: #4ade80;
+  opacity: 0.7;
+  margin-top: 0.1rem;
+}
+
+.hint-box {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  background: #132213;
+  border: 1px solid #1e3a1e;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 1rem 0;
+}
+
+.hint-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.hint-text {
+  font-size: 0.78rem;
+  color: #86efac;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+/* ── Sections ── */
+.section {
+  padding: 1rem 1.25rem 0;
+}
+
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #4ade80;
+  opacity: 0.6;
+  margin-bottom: 0.6rem;
+}
+
+.section-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.section-header-row .section-title {
+  margin-bottom: 0;
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #16a34a;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+  user-select: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-play {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  background: #16a34a;
+  color: #fff;
+}
+
+.btn-play:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.btn-pause {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  background: #ca8a04;
+  color: #fff;
+}
+
+.btn-pause:hover:not(:disabled) {
+  background: #a16207;
+}
+
+.btn-stop {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-stop:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.speed-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn-speed {
+  flex: 1;
+  padding: 0.45rem 0.25rem;
+  background: #1e3a1e;
+  color: #86efac;
+  border: 1px solid #2d5a2d;
+  font-size: 0.8rem;
+}
+
+.btn-speed:hover {
+  background: #2d5a2d;
+}
+
+.btn-speed-active {
+  background: #16a34a !important;
+  color: #fff !important;
+  border-color: #16a34a !important;
+}
+
+.btn-clear {
+  padding: 0.25rem 0.65rem;
+  background: #3b1a1a;
+  color: #fca5a5;
+  border: 1px solid #7f1d1d;
+  font-size: 0.75rem;
+}
+
+.btn-clear:hover {
+  background: #7f1d1d;
+  color: #fff;
+}
+
+.btn-remove {
+  padding: 0.15rem 0.5rem;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #374151;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.btn-remove:hover {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-color: #7f1d1d;
+}
+
+/* ── Progress ── */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #1e3a1e;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: #4ade80;
+  width: 2.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── State badge ── */
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.state-idle {
+  background: #1e3a1e;
+  color: #4ade80;
+  opacity: 0.6;
+}
+
+.state-playing {
+  background: #14532d;
+  color: #4ade80;
+}
+
+.state-paused {
+  background: #451a03;
+  color: #fdba74;
+}
+
+/* ── Waypoints list ── */
+.waypoints-section {
+  flex: 1;
+}
+
+.empty-text {
+  font-size: 0.78rem;
+  color: #4b7a4b;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.waypoint-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.waypoint-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #132213;
+  border: 1px solid #1e3a1e;
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+}
+
+.wp-index {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: #16a34a;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wp-name {
+  flex: 1;
+  font-size: 0.78rem;
+  color: #86efac;
+  font-weight: 600;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wp-coords {
+  font-size: 0.65rem;
+  color: #4b7a4b;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* ── Info / hint boxes ── */
+.info-box {
+  margin: 0.75rem 1.25rem 0;
+  background: #1a1a00;
+  border: 1px solid #4a4a00;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.75rem;
+  color: #facc15;
+  line-height: 1.4;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #2d5a2d;
+  border-radius: 2px;
 }
