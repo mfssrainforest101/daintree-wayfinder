@@ -239,23 +239,17 @@ input[type=file]{display:none;}
 <!-- INTRO -->
 <div class="screen active" id="intro">
   <div class="intro-emblem">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M12 11.5c-5 0-8 2-8 4.5V18h16v-2c0-2.5-3-4.5-8-4.5Z"/><path d="M16.5 3.5a6 6 0 0 1 0 9M7.5 3.5a6 6 0 0 0 0 9"/></svg>
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3l2 2"/></svg>
   </div>
-  <h1>Photo Match</h1>
-  <p class="sub">Matt photographed this whole route — from the Daintree Ferry to Cape Tribulation. Every photo you'll see was taken on this exact road.</p>
-  <p class="credit">Your challenge: figure out where he was standing.</p>
-  <div class="route-preview">
-    <div class="rp-stop"><div class="num">1</div><div class="name">The Ferry</div></div>
-    <div class="rp-stop"><div class="num">2</div><div class="name">The Range</div></div>
-    <div class="rp-stop"><div class="num">3</div><div class="name">Cow Bay</div></div>
-    <div class="rp-stop"><div class="num">4</div><div class="name">Thornton</div></div>
-    <div class="rp-stop"><div class="num">5</div><div class="name">Cape Trib</div></div>
-  </div>
+  <div class="credit" style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;">Photography by</div>
+  <h1>Matt Jordan</h1>
+  <p class="sub" style="font-family:var(--font-s);font-style:italic;font-size:17px;">38 frames. One coast.<br>The Daintree River to Cape Tribulation.</p>
+  <p class="credit" style="margin-bottom:32px;">Each photograph was taken on the ground — or in the air — by Matt on his own time on this stretch of country. Locate each frame.</p>
   <button class="btn-start" id="btnStart">
     <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg>
-    Start the Hunt
+    View the Work
   </button>
-  <p class="tally">38 photos · 12 challenges · wildlife, river, rainforest, coast</p>
+  <p class="tally" style="margin-top:14px;">12 rounds · cassowaries · river · rainforest ridge · coast</p>
 </div>
 
 <!-- GAME -->
@@ -279,8 +273,8 @@ input[type=file]{display:none;}
   <!-- Question + options below the photo -->
   <div class="question-section">
     <div>
-      <div class="stop-pill"><span class="stop-dot"></span><span id="challengeRoundLbl">Challenge 1</span></div>
-      <div class="question-heading">Where did Matt take this photo?</div>
+      <div class="stop-pill"><span class="stop-dot"></span><span id="challengeRoundLbl">Frame 1</span></div>
+      <div class="question-heading">Locate this frame on the coast.</div>
     </div>
 
     <div class="clue-area">
@@ -314,7 +308,7 @@ input[type=file]{display:none;}
 
     <button class="btn-again" onclick="restartGame()">
       <svg viewBox="0 0 24 24"><path d="M19.5 8.5A8 8 0 0 0 5 7.5M4.5 15.5A8 8 0 0 0 19 16.5"/><path d="M19.5 3.8v4.7h-4.7M4.5 20.2v-4.7h4.7"/></svg>
-      Play Again
+      Go Again
     </button>
 
     <div class="gallery-tabs">
@@ -323,12 +317,12 @@ input[type=file]{display:none;}
     </div>
 
     <div class="tab-pane active" id="tab-photos">
-      <p class="gallery-subtitle">All 38 photographs taken on this route — cassowaries, sunbirds, river sunsets, the ferry, the rainforest ridge, and the beach at every hour.</p>
+      <p class="gallery-subtitle">Every frame in the collection — shot on the ground and from the air by Matt Jordan across this stretch of country.</p>
       <div class="photo-grid" id="photoGrid"></div>
     </div>
 
     <div class="tab-pane" id="tab-map">
-      <p class="gallery-subtitle" style="margin-bottom:14px;">Precise GPS pin for every photo — tap any dot to see where Matt was standing.</p>
+      <p class="gallery-subtitle" style="margin-bottom:14px;">GPS position of every frame. Tap a pin to find it in the collection.</p>
       <div class="map-wrap">
         <svg id="routeMap" viewBox="0 0 340 780" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="map-tooltip" id="mapTooltip">
@@ -583,7 +577,7 @@ function showRound(){
   document.getElementById('totalLabel').textContent=challenges.length;
   document.getElementById('progressFill').style.width=((round/challenges.length)*100)+'%';
   document.getElementById('scoreVal').textContent=score;
-  document.getElementById('challengeRoundLbl').textContent='Challenge '+(round+1)+' of '+challenges.length;
+  document.getElementById('challengeRoundLbl').textContent='Frame '+(round+1)+' of '+challenges.length;
 
   const img=document.getElementById('challengeImg');
   img.src=photoUrl(p.id);
@@ -646,7 +640,7 @@ function chooseOption(chosen,correct,btn,c){
 
   const nextBtn=document.getElementById('btnNext');
   nextBtn.classList.remove('hidden');
-  nextBtn.textContent=round<challenges.length-1?'Next Photo →':'See the Gallery';
+  nextBtn.textContent=round<challenges.length-1?'Next Frame →':'View the Collection';
 }
 
 document.getElementById('btnNext').addEventListener('click',()=>{
@@ -660,10 +654,10 @@ function showGallery(){
   const max=challenges.length*100;
   const pct=Math.round(score/max*100);
   let rank;
-  if(pct>=90)rank='Expert Daintree Eye — you know this country.';
-  else if(pct>=70)rank='Strong reading of the landscape.';
-  else if(pct>=50)rank='Good start — come back after the tour.';
-  else rank='The land teaches you. Try again.';
+  if(pct>=90)rank='You know this country cold.';
+  else if(pct>=70)rank='Sharp eye for the land.';
+  else if(pct>=50)rank='Getting your bearings.';
+  else rank='The coast has more to show you.';
   document.getElementById('finalRank').textContent=`${pct}% — ${rank}`;
 
   const grid=document.getElementById('photoGrid');
