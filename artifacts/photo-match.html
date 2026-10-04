@@ -45,32 +45,59 @@ img{max-width:100%;display:block;}
 
 /* ── GAME ── */
 #game{background:var(--bg);}
-.game-header{padding:16px 20px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.progress-wrap{flex:1;min-width:0;}
-.progress-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
-.progress-bar{height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--acc-hi));border-radius:99px;transition:width .6s ease;}
-.score-box{background:var(--surf);border:1px solid var(--line2);border-radius:12px;padding:8px 14px;text-align:center;min-width:70px;}
-.score-box .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
-.score-box .val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--acc-hi);}
 
-/* Challenge card */
-.challenge-wrap{padding:16px 20px 100px;display:flex;flex-direction:column;gap:16px;max-width:680px;margin:0 auto;width:100%;}
-.photo-card{border-radius:var(--r);overflow:hidden;position:relative;background:var(--surf);}
-.photo-card img{width:100%;max-height:380px;object-fit:cover;display:block;}
-.photo-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;}
-.photo-overlay .round-lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6);}
-.photo-overlay .ask{font-family:var(--font-s);font-size:18px;margin-top:2px;}
+/* Sticky progress header */
+.game-header{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  padding:10px 16px;display:flex;gap:10px;align-items:center;
+  background:rgba(8,15,11,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.progress-wrap{flex:1;min-width:0;}
+.progress-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:5px;}
+.progress-bar{height:5px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--acc-hi));border-radius:99px;transition:width .6s ease;}
+.score-box{background:var(--surf);border:1px solid var(--line2);border-radius:10px;padding:6px 12px;text-align:center;min-width:60px;}
+.score-box .lbl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+.score-box .val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--acc-hi);}
+
+/* Full-size photo */
+.photo-hero{position:relative;background:var(--surf);flex-shrink:0;}
+.photo-hero img{
+  width:100%;
+  height:65vh;
+  min-height:300px;
+  max-height:75vh;
+  object-fit:cover;
+  display:block;
+  cursor:zoom-in;
+}
+.photo-expand{
+  position:absolute;bottom:12px;right:12px;
+  width:36px;height:36px;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(6px);
+  border-radius:8px;border:1px solid rgba(255,255,255,.18);
+  color:#fff;display:grid;place-items:center;cursor:pointer;
+  transition:background .15s;
+}
+.photo-expand:hover{background:rgba(0,0,0,.8);}
+.photo-expand svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* Question section */
+.question-section{padding:16px 18px 100px;display:flex;flex-direction:column;gap:14px;max-width:680px;margin:0 auto;width:100%;}
+.question-heading{font-family:var(--font-s);font-size:20px;line-height:1.25;text-wrap:balance;}
+.stop-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surf2);border:1px solid var(--line2);}
+.stop-dot{width:7px;height:7px;border-radius:50%;background:var(--acc-hi);}
 
 /* Clue section */
-.clue-area{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:16px;}
-.clue-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.clue-header b{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
-.clue-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line2);border-radius:999px;font-size:12.5px;font-weight:600;color:var(--muted);transition:.15s;}
+.clue-area{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:14px;}
+.clue-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.clue-header b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);}
+.clue-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--line2);border-radius:999px;font-size:12px;font-weight:600;color:var(--muted);transition:.15s;}
 .clue-btn:hover:not(:disabled){border-color:var(--acc-hi);color:var(--text);}
 .clue-btn:disabled{opacity:.35;cursor:default;}
 .clue-list{display:flex;flex-direction:column;gap:6px;}
-.clue-item{padding:8px 12px;border-radius:10px;background:var(--surf2);border:1px solid var(--line);font-size:13.5px;animation:fadeSlide .3s ease;}
+.clue-item{padding:8px 12px;border-radius:10px;background:var(--surf2);border:1px solid var(--line);font-size:13px;animation:fadeSlide .3s ease;}
 @keyframes fadeSlide{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
 
 /* Options */
@@ -85,7 +112,7 @@ img{max-width:100%;display:block;}
 .opt-btn:disabled{cursor:default;}
 
 /* Feedback banner */
-.feedback{padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.5;animation:fadeSlide .3s ease;margin-top:4px;}
+.feedback{padding:14px 16px;border-radius:12px;font-size:14px;line-height:1.5;animation:fadeSlide .3s ease;}
 .feedback.correct{background:rgba(123,201,106,.14);border:1px solid rgba(123,201,106,.35);color:var(--good);}
 .feedback.wrong{background:rgba(224,101,78,.1);border:1px solid rgba(224,101,78,.3);color:var(--text);}
 .feedback .cap{font-style:italic;color:var(--muted);font-size:13px;margin-top:6px;font-family:var(--font-s);}
@@ -95,38 +122,117 @@ img{max-width:100%;display:block;}
 .btn-next:hover{filter:brightness(1.08);}
 .btn-next:active{transform:scale(.98);}
 
-/* Stop pill */
-.stop-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surf2);border:1px solid var(--line2);margin-bottom:4px;}
-.stop-dot{width:7px;height:7px;border-radius:50%;background:var(--acc-hi);}
-
 /* ── GALLERY ── */
-#gallery{background:var(--bg);padding:28px 20px 60px;max-width:1000px;margin:0 auto;width:100%;}
-#gallery h2{font-size:28px;margin-bottom:6px;}
-#gallery .sub{color:var(--muted);font-size:14px;margin-bottom:24px;}
-.score-final{background:linear-gradient(135deg,var(--surf2),var(--surf));border:1px solid var(--line2);border-radius:var(--r);padding:20px 24px;text-align:center;margin-bottom:28px;}
+#gallery{background:var(--bg);}
+.gallery-inner{padding:24px 20px 80px;max-width:1040px;margin:0 auto;width:100%;}
+.score-final{background:linear-gradient(135deg,var(--surf2),var(--surf));border:1px solid var(--line2);border-radius:var(--r);padding:20px 24px;text-align:center;margin-bottom:20px;position:relative;}
 .score-final .big{font-size:52px;font-weight:800;color:var(--acc-hi);font-variant-numeric:tabular-nums;line-height:1;}
-.score-final .rank{font-size:16px;color:var(--muted);margin-top:6px;font-family:var(--font-s);font-style:italic;}
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
-.photo-tile{border-radius:var(--r);overflow:hidden;background:var(--surf);border:1px solid var(--line);transition:transform .15s,box-shadow .15s;cursor:pointer;}
-.photo-tile:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.4);}
-.photo-tile img{width:100%;height:200px;object-fit:cover;}
-.photo-tile .info{padding:12px 14px;}
-.photo-tile .loc{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-hi);margin-bottom:4px;}
-.photo-tile .cap{font-size:13px;color:var(--muted);font-style:italic;font-family:var(--font-s);}
-.photo-tile .stop-tag{display:inline-block;font-size:10px;background:var(--acc-soft);border:1px solid var(--line2);border-radius:6px;padding:2px 7px;color:var(--muted);margin-top:6px;letter-spacing:.08em;text-transform:uppercase;}
-
-/* Lightbox */
-.lb{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:16px;}
-.lb.open{display:flex;}
-.lb-img{max-width:100%;max-height:90vh;border-radius:12px;}
-.lb-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:20px;display:grid;place-items:center;}
-
-/* Play again */
-.btn-again{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 32px;background:var(--surf2);border:1px solid var(--line2);border-radius:999px;font-size:15px;font-weight:600;margin:0 auto 32px;transition:filter .15s;}
+.score-final .rank{font-size:15px;color:var(--muted);margin-top:6px;font-family:var(--font-s);font-style:italic;}
+.btn-share{
+  position:absolute;top:14px;right:14px;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 13px;background:var(--surf3);border:1px solid var(--line2);border-radius:999px;
+  font-size:12px;font-weight:600;color:var(--muted);transition:.15s;
+}
+.btn-share:hover{border-color:var(--acc-hi);color:var(--text);}
+.btn-share svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.btn-again{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;background:var(--surf2);border:1px solid var(--line2);border-radius:999px;font-size:15px;font-weight:600;margin:0 auto 24px;transition:filter .15s;}
 .btn-again:hover{filter:brightness(1.1);}
 .btn-again svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+.gallery-tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:20px;}
+.tab-btn{flex:1;padding:11px;font-size:13px;font-weight:600;text-align:center;color:var(--faint);border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.15s;text-transform:uppercase;letter-spacing:.08em;}
+.tab-btn.active{color:var(--acc-hi);border-color:var(--acc-hi);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.gallery-subtitle{color:var(--muted);font-size:13.5px;margin-bottom:20px;font-style:italic;font-family:var(--font-s);}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.photo-tile{border-radius:var(--r);overflow:hidden;background:var(--surf);border:1px solid var(--line);transition:transform .15s,box-shadow .15s;cursor:pointer;}
+.photo-tile:hover,.photo-tile.highlighted{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.45);}
+.photo-tile.highlighted{border-color:var(--acc-hi);}
+.photo-tile img{width:100%;height:190px;object-fit:cover;}
+.photo-tile .info{padding:10px 13px;}
+.photo-tile .loc{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-hi);margin-bottom:3px;}
+.photo-tile .cap{font-size:12.5px;color:var(--muted);font-style:italic;font-family:var(--font-s);}
+.photo-tile .stop-tag{display:inline-block;font-size:10px;background:var(--acc-soft);border:1px solid var(--line2);border-radius:6px;padding:2px 7px;color:var(--muted);margin-top:6px;letter-spacing:.08em;text-transform:uppercase;}
 
-/* hidden helper */
+/* Route map */
+.map-wrap{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;position:relative;}
+.map-legend{padding:12px 16px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+#routeMap{width:100%;display:block;}
+.map-tooltip{
+  position:absolute;background:rgba(12,24,18,.92);backdrop-filter:blur(8px);
+  border:1px solid var(--line2);border-radius:10px;padding:10px 12px;
+  max-width:200px;pointer-events:none;font-size:12px;color:var(--text);
+  z-index:10;display:none;
+}
+.map-tooltip .tt-stop{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-hi);margin-bottom:3px;}
+.map-tooltip .tt-loc{font-family:var(--font-s);font-size:13px;line-height:1.3;}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;padding:16px;}
+.lb.open{display:flex;}
+.lb-img{max-width:100%;max-height:92vh;border-radius:10px;object-fit:contain;}
+.lb-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:20px;display:grid;place-items:center;}
+
+/* ── HOST PANEL ── */
+.host-fab{
+  position:fixed;bottom:20px;left:20px;z-index:30;
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(23,37,25,.85);backdrop-filter:blur(8px);
+  border:1px solid var(--line2);color:var(--faint);
+  display:grid;place-items:center;transition:.2s;
+}
+.host-fab:hover{border-color:var(--acc-hi);color:var(--acc-hi);}
+.host-fab svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;}
+.host-overlay{
+  position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.75);
+  display:none;align-items:flex-end;justify-content:center;
+}
+.host-overlay.open{display:flex;}
+.host-sheet{
+  background:var(--bg2);border-radius:20px 20px 0 0;
+  border:1px solid var(--line2);border-bottom:0;
+  width:100%;max-width:600px;max-height:90vh;overflow-y:auto;
+  padding:20px 20px 40px;
+}
+.host-sheet h3{font-size:18px;margin-bottom:4px;}
+.host-sheet .sub{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.host-sheet label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:5px;}
+.host-sheet input[type=text],.host-sheet select,.host-sheet textarea{
+  width:100%;padding:10px 12px;background:var(--surf);border:1px solid var(--line2);
+  border-radius:10px;color:var(--text);font:inherit;font-size:14px;
+  outline:none;margin-bottom:14px;
+}
+.host-sheet input:focus,.host-sheet select:focus,.host-sheet textarea:focus{border-color:var(--acc-hi);}
+.host-sheet textarea{resize:vertical;min-height:64px;}
+.host-preview{width:100%;height:200px;background:var(--surf);border-radius:12px;border:2px dashed var(--line2);margin-bottom:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.host-preview img{width:100%;height:100%;object-fit:cover;}
+.host-preview .ph{color:var(--faint);font-size:13px;text-align:center;gap:8px;display:flex;flex-direction:column;align-items:center;}
+.host-preview .ph svg{width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:1.5;}
+.host-file-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1.5px solid var(--line2);border-radius:999px;font-size:14px;font-weight:600;color:var(--muted);transition:.15s;margin-bottom:14px;}
+.host-file-btn:hover{border-color:var(--acc-hi);color:var(--text);}
+input[type=file]{display:none;}
+.host-instructions{background:var(--surf);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.host-instructions strong{color:var(--text);}
+.host-close{width:100%;padding:12px;border:1px solid var(--line2);border-radius:12px;font-size:14px;font-weight:600;color:var(--muted);transition:.15s;}
+.host-close:hover{border-color:var(--bad);color:var(--bad);}
+.pin-gate{padding:20px;text-align:center;}
+.pin-gate h3{font-size:18px;margin-bottom:8px;}
+.pin-gate p{color:var(--muted);font-size:13px;margin-bottom:18px;}
+.pin-input{display:flex;gap:10px;justify-content:center;align-items:center;}
+.pin-input input{width:120px;padding:12px;background:var(--surf);border:1.5px solid var(--line2);border-radius:10px;color:var(--text);font:700 24px/1 var(--font-b);text-align:center;letter-spacing:.2em;outline:none;}
+.pin-input input:focus{border-color:var(--acc-hi);}
+.pin-input button{padding:12px 20px;background:var(--accent);color:var(--acc-ink);border-radius:10px;font-weight:700;}
+.pin-err{color:var(--bad);font-size:13px;margin-top:8px;height:18px;}
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);
+  background:var(--surf3);border:1px solid var(--acc-hi);border-radius:999px;
+  padding:10px 20px;font-size:14px;font-weight:600;color:var(--acc-hi);
+  pointer-events:none;z-index:100;opacity:0;transition:opacity .2s,transform .2s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .hidden{display:none!important;}
 </style>
 
@@ -138,7 +244,6 @@ img{max-width:100%;display:block;}
   <h1>Photo Match</h1>
   <p class="sub">Matt photographed this whole route — from the Daintree Ferry to Cape Tribulation. Every photo you'll see was taken on this exact road.</p>
   <p class="credit">Your challenge: figure out where he was standing.</p>
-
   <div class="route-preview">
     <div class="rp-stop"><div class="num">1</div><div class="name">The Ferry</div></div>
     <div class="rp-stop"><div class="num">2</div><div class="name">The Range</div></div>
@@ -146,7 +251,6 @@ img{max-width:100%;display:block;}
     <div class="rp-stop"><div class="num">4</div><div class="name">Thornton</div></div>
     <div class="rp-stop"><div class="num">5</div><div class="name">Cape Trib</div></div>
   </div>
-
   <button class="btn-start" id="btnStart">
     <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg>
     Start the Hunt
@@ -158,59 +262,88 @@ img{max-width:100%;display:block;}
 <div class="screen" id="game">
   <div class="game-header">
     <div class="progress-wrap">
-      <div class="progress-label">Round <span id="roundLabel">1</span> of <span id="totalLabel">8</span></div>
+      <div class="progress-label">Round <span id="roundLabel">1</span> of <span id="totalLabel">12</span></div>
       <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
     </div>
     <div class="score-box"><div class="lbl">Score</div><div class="val" id="scoreVal">0</div></div>
   </div>
 
-  <div class="challenge-wrap">
-    <!-- Photo -->
-    <div class="photo-card">
-      <img id="challengeImg" src="" alt="Where was this taken?" loading="lazy">
-      <div class="photo-overlay">
-        <div class="round-lbl" id="photoRoundLbl">Challenge 1</div>
-        <div class="ask">Where did Matt take this photo?</div>
-      </div>
+  <!-- Full-height photo -->
+  <div class="photo-hero" id="photoHero">
+    <img id="challengeImg" src="" alt="Where was this taken?" loading="lazy">
+    <button class="photo-expand" id="photoExpandBtn" title="Expand">
+      <svg viewBox="0 0 24 24"><path d="M15 3h6m0 0v6m0-6-7 7M9 21H3m0 0v-6m0 6 7-7"/></svg>
+    </button>
+  </div>
+
+  <!-- Question + options below the photo -->
+  <div class="question-section">
+    <div>
+      <div class="stop-pill"><span class="stop-dot"></span><span id="challengeRoundLbl">Challenge 1</span></div>
+      <div class="question-heading">Where did Matt take this photo?</div>
     </div>
 
-    <!-- Clues -->
     <div class="clue-area">
       <div class="clue-header">
         <b>Clues</b>
         <button class="clue-btn" id="clueBtn">
-          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           Reveal a clue (−25 pts)
         </button>
       </div>
       <div class="clue-list" id="clueList"></div>
     </div>
 
-    <!-- Options -->
     <div class="options-grid" id="optGrid"></div>
-
-    <!-- Feedback -->
     <div class="hidden" id="feedback"></div>
-
-    <!-- Next -->
     <button class="btn-next hidden" id="btnNext">Next Photo →</button>
   </div>
 </div>
 
 <!-- GALLERY / RESULTS -->
 <div class="screen" id="gallery">
-  <div>
+  <div class="gallery-inner">
     <div class="score-final">
+      <button class="btn-share" id="btnShare">
+        <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Share
+      </button>
       <div class="big" id="finalScore">0</div>
       <div class="rank" id="finalRank">Loading...</div>
     </div>
+
     <button class="btn-again" onclick="restartGame()">
       <svg viewBox="0 0 24 24"><path d="M19.5 8.5A8 8 0 0 0 5 7.5M4.5 15.5A8 8 0 0 0 19 16.5"/><path d="M19.5 3.8v4.7h-4.7M4.5 20.2v-4.7h4.7"/></svg>
       Play Again
     </button>
-    <h2>Matt's Gallery</h2>
-    <p class="sub">All 38 photographs taken on this route — cassowaries, sunbirds, river sunsets, the ferry, the rainforest ridge, and the beach at every hour. Every one was shot by Matt on his own journeys through this country.</p>
-    <div class="photo-grid" id="photoGrid"></div>
+
+    <div class="gallery-tabs">
+      <button class="tab-btn active" data-tab="photos">Photos</button>
+      <button class="tab-btn" data-tab="map">Route Map</button>
+    </div>
+
+    <div class="tab-pane active" id="tab-photos">
+      <p class="gallery-subtitle">All 38 photographs taken on this route — cassowaries, sunbirds, river sunsets, the ferry, the rainforest ridge, and the beach at every hour.</p>
+      <div class="photo-grid" id="photoGrid"></div>
+    </div>
+
+    <div class="tab-pane" id="tab-map">
+      <p class="gallery-subtitle" style="margin-bottom:14px;">Precise GPS pin for every photo — tap any dot to see where Matt was standing.</p>
+      <div class="map-wrap">
+        <svg id="routeMap" viewBox="0 0 340 780" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="map-tooltip" id="mapTooltip">
+          <div class="tt-stop" id="ttStop"></div>
+          <div class="tt-loc" id="ttLoc"></div>
+        </div>
+        <div class="map-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#6ab4d8"></span>Ferry &amp; River</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#e8b84b"></span>Alexandra Range</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#acd95a"></span>Cow Bay</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#7bc96a"></span>Thornton Beach</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#e0654e"></span>Cape Tribulation</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -220,13 +353,84 @@ img{max-width:100%;display:block;}
   <button class="lb-close" onclick="closeLb()">✕</button>
 </div>
 
+<!-- Host FAB -->
+<button class="host-fab" id="hostFab" title="Host tools">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+</button>
+
+<!-- Host Panel Overlay -->
+<div class="host-overlay" id="hostOverlay">
+  <div class="host-sheet">
+    <!-- PIN gate -->
+    <div class="pin-gate" id="pinGate">
+      <h3>Host Tools</h3>
+      <p>Enter the host PIN to access photo management</p>
+      <div class="pin-input">
+        <input type="password" id="pinInput" maxlength="4" placeholder="····" inputmode="numeric">
+        <button onclick="checkPin()">Enter</button>
+      </div>
+      <div class="pin-err" id="pinErr"></div>
+      <button class="host-close" style="margin-top:20px" onclick="closeHost()">Cancel</button>
+    </div>
+
+    <!-- Host tools (shown after PIN) -->
+    <div class="hidden" id="hostTools">
+      <h3>Add a Photo</h3>
+      <p class="sub">Preview, label, and queue a new photo. When ready, share the file and details with Claude to publish it to the live game.</p>
+
+      <div class="host-preview" id="hostPreview">
+        <div class="ph">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          No photo selected
+        </div>
+      </div>
+
+      <button class="host-file-btn" onclick="document.getElementById('photoFileInput').click()">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        Choose Photo
+      </button>
+      <input type="file" id="photoFileInput" accept="image/*">
+
+      <label>Stop / Location</label>
+      <select id="hostStop">
+        <option value="0">1 — Daintree Ferry &amp; River</option>
+        <option value="1">2 — Alexandra Range</option>
+        <option value="2">3 — Cow Bay</option>
+        <option value="3">4 — Thornton Beach</option>
+        <option value="4">5 — Cape Tribulation</option>
+      </select>
+
+      <label>Location description</label>
+      <input type="text" id="hostLoc" placeholder="e.g. Daintree River — aerial looking south">
+
+      <label>Caption (Matt's story)</label>
+      <textarea id="hostCap" placeholder="What was happening, why this moment matters..."></textarea>
+
+      <label>Clue 1</label>
+      <input type="text" id="hostClue1" placeholder="A visual detail in the image">
+      <label>Clue 2</label>
+      <input type="text" id="hostClue2" placeholder="Something about the setting or light">
+      <label>Clue 3</label>
+      <input type="text" id="hostClue3" placeholder="A more specific giveaway">
+
+      <div class="host-instructions" id="hostInstructions" style="display:none">
+        <strong>Ready to publish!</strong><br>
+        To add this photo to the live game, share it with Claude in this session and say:<br><br>
+        <em id="hostInstrText"></em>
+      </div>
+
+      <button class="btn-next" style="margin-bottom:12px" onclick="prepareHostSubmit()">Generate Publish Instructions</button>
+      <button class="host-close" onclick="closeHost()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
 (function(){
 'use strict';
 
-/* ─── PHOTO DATA ───
-   URLs are filled by PHOTO_URLS lookup at runtime.
-   IDs match the upload filenames. ─── */
 const STOPS = [
   'Daintree Ferry & River',
   'Alexandra Range',
@@ -234,118 +438,113 @@ const STOPS = [
   'Thornton Beach',
   'Cape Tribulation'
 ];
+const STOP_COLORS = ['#6ab4d8','#e8b84b','#acd95a','#7bc96a','#e0654e'];
 
-/* All 20 of Matt's photos */
+/* GPS coords: [lat, lng] for each photo */
 const GALLERY = [
-  {id:'64673235',stop:0,loc:'Daintree River — aerial looking south toward the ferry crossing',cap:"Matt's aerial of the Daintree River snaking south toward the ferry. The oldest rainforest in Australia begins right here.",clues:['Winding river delta from above','Subtropical vegetation edge','Looking south toward the coast']},
-  {id:'d7733863',stop:1,loc:'Alexandra Range — Coral Sea vertical at dusk',cap:"Shot from the Range lookout — a vertical slice of the Coral Sea turning pink and amber at dusk.",clues:['Steep descent to the sea','Vertical sunset light on open water','High elevation, no foreground vegetation']},
-  {id:'2967a22e',stop:1,loc:'Alexandra Range — golden hour over the Coral Sea',cap:"Golden hour from the Alexandra Range. The Coral Sea and distant reef islands glow amber.",clues:['Elevated coastal vantage','Gold and pink sky, open horizon','Reef islands faintly visible in distance']},
-  {id:'11271565',stop:1,loc:'Alexandra Range — fern fronds framing the river valley',cap:"Ancient fern fronds frame the Daintree River valley below the Range. These ferns are 130 million years old.",clues:['Large ancient fern species foreground','River visible far below','Dense rainforest canopy mid-ground']},
-  {id:'d482d46d',stop:2,loc:'Cow Bay — aerial panoramic below Cape Kimberley',cap:"Matt's aerial of Cow Bay — the tiny community tucked between mountain and sea below Cape Kimberley.",clues:['Small coastal community visible','Mountain rises steeply behind','Bay curves away to the right']},
-  {id:'1208a739',stop:3,loc:'Thornton Beach — aerial drone view of the bay at sunset',cap:"Thornton Beach at sunset from a drone — where the ancient rainforest drops straight into the Coral Sea.",clues:['Beach arced around a bay','Rainforest meets beach edge directly','Drone elevation, no track or road visible']},
-  {id:'7a2361bd',stop:3,loc:'Thornton Beach — rock platform at low tide (colour)',cap:"Thornton Beach's rock platform at low tide — rich green algae, a small island sits offshore to the right.",clues:['Algae-covered flat rock foreground','Small island sitting offshore','Tropical low-tide tidal platform']},
-  {id:'65404223',stop:3,loc:'Thornton Beach — rock platform (black and white)',cap:"Same rock platform, stripped to light and shadow. Low tide at Thornton Beach.",clues:['Monochrome seascape','Flat rock foreground, island mid-distance','Same location as adjacent colour shot']},
-  {id:'4c6c3477',stop:3,loc:'Thornton Beach — tidal flat, low-angle',cap:"Low-angle on the tidal flat — a thin film of water mirrors the sky overhead.",clues:['Extreme low-angle perspective','Thin water film on flat surface','Sky reflected in foreground water']},
-  {id:'afe4122c',stop:3,loc:'Thornton Beach — rock platform close study',cap:"Close study of the rock platform surface — salt, algae, and time compressed into texture.",clues:['Moss and algae detail, close range','Salt-weathered rock face','Intertidal zone between high and low water']},
-  {id:'74fe3c94',stop:3,loc:'Thornton Beach — low-angle rock and Coral Sea',cap:"Rock foreground, Coral Sea behind — Thornton Beach rock platform in afternoon light.",clues:['Rock foreground, wide sea horizon','Afternoon sidelight on rock texture','Low-angle shot from the intertidal zone']},
-  {id:'08f7a6c7',stop:3,loc:'Aerial — rainforest ridge under tropical storm clouds',cap:"A tropical storm builds over the rainforest ridge between Thornton Beach and Cape Tribulation. Drone shot.",clues:['Dramatic storm cloud build','Unbroken rainforest canopy below','Aerial — no ground features visible, pure forest']},
-  {id:'742955d5',stop:4,loc:'Cape Tribulation headland — aerial with storm cloud and beach below',cap:"Cape Tribulation headland from above — a storm cloud sits on the summit, Myall Beach visible below the cliff.",clues:['Dramatic headland profile from air','Cloud on the summit, beach below','This is the end of the sealed road']},
-  {id:'5eef1806',stop:4,loc:'Myall Beach — driftwood tree with Mackay Island offshore',cap:"The leaning driftwood tree is a Myall Beach landmark. Mackay Island sits offshore — this is the end of the route.",clues:['Driftwood tree leaning toward water','Island visible offshore','Moody sky, remote feel']},
-  {id:'99baceda',stop:4,loc:'Myall Beach — full view, driftwood and Mackay Island',cap:"Matt's landmark driftwood tree on Myall Beach — the view that defines the end of the Daintree route.",clues:['Same distinctive driftwood tree','Larger perspective, Coral Sea visible','Island silhouette to the right']},
-  {id:'c88472d2',stop:4,loc:'Myall Beach — sunset with driftwood and island silhouette',cap:"Sunset at Myall Beach. The silhouette sequence Matt returned to photograph again and again.",clues:['Orange and gold sky','Tree silhouette against dusk light','Island to the right, Coral Sea beyond']},
-  {id:'6cdbddde',stop:4,loc:'Myall Beach — deep sunset, driftwood silhouette',cap:"Deep in the sunset. The same tree, the same island — different light, different hour.",clues:['Deep orange sky at last light','Driftwood fully silhouetted','Island on the horizon, barely visible']},
-  {id:'5dff0420',stop:4,loc:'Myall Beach — dawn light, softer tones',cap:"Same beach, pre-dawn. The palette shifts completely — cooler, quieter, different world.",clues:['Pale early morning light','Cooler colour temperature than sunset shots','Same landscape — dawn rather than dusk']},
-  {id:'e0a562f4',stop:4,loc:'Myall Beach — golden hour with tree texture detail',cap:"Golden hour at Myall Beach. Matt was here early and often — the light makes the driftwood glow.",clues:['Warm golden light on wood texture','Tree texture and form visible','Island to the right of frame']},
-  {id:'e7b89067',stop:4,loc:'Myall Beach — full beach panoramic at dusk',cap:"The full panoramic at dusk — from the driftwood tree to the reef beyond Mackay Island.",clues:['Wide beach view, full scene','Dusk colours, reef glow','Both tree and island in frame']},
-  /* ── NEW: Daintree River & Ferry ── */
-  {id:'8f1f0a3c',stop:0,loc:'Daintree River — vivid orange sunset reflection',cap:"A blazing orange sunset on the Daintree River. Signed MFS — Matt was right here at the water's edge.",clues:['River reflection of orange sunset','Dense treeline silhouette','Daintree River bank, not the beach']},
-  {id:'57a40b9f',stop:0,loc:'Daintree River — black and white, treeline and water',cap:"Stripped of colour the river becomes pure form — sun disc, reflected light, ancient treeline.",clues:['Monochrome river scene','Round sun visible above treeline','Calm reflective water surface']},
-  {id:'f8bc0d90',stop:0,loc:'Daintree River — from a boat looking upstream',cap:"Looking upstream from a river cruise — the boat bow in foreground, rainforest banks closing in on both sides.",clues:['Boat bow visible in foreground','Looking upstream on the river','Rainforest walls both sides of the water']},
-  {id:'9d979d79',stop:0,loc:'Daintree Ferry — dramatic red sky at dusk from the deck',cap:"On the ferry deck at dusk — a safety sign just visible, the river ablaze with red and amber light above.",clues:['Ferry deck visible in the foreground','Safety sign at lower left','River surface lit by dramatic sky']},
-  {id:'b63f147b',stop:0,loc:'Daintree River mouth — coastal water at dusk with sailboats',cap:"Sailboats at anchor in the calm water near the river mouth, a mountain range rising behind at dusk.",clues:['Two sailboats anchored on calm water','Mountain range silhouette behind','Dusk sky, coastal estuary setting']},
-  /* ── NEW: Wildlife — Cassowary ── */
-  {id:'0fbebbb1',stop:2,loc:'Cow Bay Road — cassowary crossing warning signs',cap:"Before and after — cassowary crossing signs on the Cape Tribulation Road through Cow Bay. These birds have the right of way.",clues:['Road signs in a tropical setting','Cassowary silhouette on signage','Warning signs both sides of the road']},
-  {id:'8488e24f',stop:2,loc:'Cow Bay — cassowary adult with two striped chicks',cap:"A southern cassowary leads its two chicks through the undergrowth. The striped juveniles are weeks old.",clues:['Adult cassowary with juvenile chicks','Striped pattern on the young birds','Dense rainforest floor, leaf litter']},
-  {id:'306ce789',stop:2,loc:'Cow Bay Road — two baby cassowary chicks face to face',cap:"Two baby cassowaries face each other on the tarmac — tiny puffed forms with the distinctive stripe pattern.",clues:['Very young chicks, striped pattern','On road surface, face to face','No adult visible in the frame']},
-  {id:'ce298454',stop:2,loc:'Cow Bay rainforest track — young cassowary close-up',cap:"A young cassowary holds its ground on a dirt track — the turquoise and red neck colouring already vivid.",clues:['Close-up of a juvenile cassowary','Blue and red neck colouring visible','Dirt track, leaf litter, mid-shot']},
-  {id:'b1db114c',stop:2,loc:'Cow Bay car park — cassowary in the open',cap:"A cassowary strides through the car park. Shot on an OPPO — right place, right moment.",clues:['Open car park setting','Cassowary walking at close range','Shot on a phone — candid, unposed']},
-  /* ── NEW: Wildlife — Olive-backed Sunbird ── */
-  {id:'327520a1',stop:1,loc:'Alexandra Range — sunbird on fern fronds',cap:"An olive-backed sunbird perches between fern croziers on the Range — iridescent blue-green and gold.",clues:['Tiny colourful bird','Fern frond croziers in background','High in the rainforest canopy zone']},
-  {id:'d2caaf2a',stop:2,loc:'Cow Bay — sunbird feeding chicks in a hanging nest',cap:"A sunbird at a hanging woven nest feeding tiny chicks — a blink-and-miss moment on the Cow Bay walk.",clues:['Hanging woven nest pendant','Adult sunbird at nest entrance','Tropical understory setting']},
-  {id:'d650d19f',stop:2,loc:'Cow Bay — sunbird nest close-up with chicks',cap:"Extreme close-up of a sunbird nest — the tiny chicks just visible inside the woven cup.",clues:['Woven pendant nest in extreme close-up','Chick heads just visible at entrance','Fine grasses and fibres in nest structure']},
-  {id:'cd360eb6',stop:2,loc:'Cow Bay — olive-backed sunbird on a leaf, close-up',cap:"An olive-backed sunbird posing on a broad tropical leaf — the iridescent plumage at close range.",clues:['Bright iridescent plumage','Perched on a single large leaf','Tropical understory, shallow depth of field']},
-  /* ── NEW: Nocturnal Wildlife ── */
-  {id:'9a6eb1c4',stop:3,loc:'Thornton Beach area — feral water buffalo at night',cap:"A feral water buffalo lit by spotlight at night — introduced and imposing, occasionally seen near the road.",clues:['Night photograph','Large dark animal in spotlight','Dense vegetation at the frame edge']},
-  /* ── NEW: Cape Tribulation beach sunsets ── */
-  {id:'fb23db5e',stop:4,loc:'Cape Tribulation beach — bare tree silhouette with headland',cap:"Taken on 07 January 2021 — a bare tree frames the headland at Cape Tribulation in last light.",clues:['Bare dead tree framing the shot','Headland silhouette behind','Film-strip grain, last light quality']},
-  {id:'32007e40',stop:4,loc:'Cape Tribulation beach — driftwood tree vertical sunset',cap:"A vertical portrait of the driftwood tree at sunset — captured on a phone as a lock screen.",clues:['Vertical composition (portrait)','Single driftwood tree, monumental','Warm sunset palette, sky above sea']},
-  {id:'83bcb717',stop:4,loc:'Cape Tribulation — leaf heart framing the sunset',cap:"Two leaves held to frame a heart shape over the sunset water. Shot on Samsung Galaxy A30.",clues:['Two leaves composing a heart','Shot through natural framing','Sunset sea and sky behind']},
+  /* Daintree River aerial + ferry */
+  {id:'64673235',stop:0,lat:-16.1540,lng:145.4252,loc:'Daintree River — aerial looking south toward the ferry crossing',cap:"Matt's aerial of the Daintree River snaking south toward the ferry. The oldest rainforest in Australia begins right here.",clues:['Winding river delta from above','Subtropical vegetation edge','Looking south toward the coast']},
+  {id:'9d979d79',stop:0,lat:-16.1667,lng:145.4167,loc:'Daintree Ferry — dramatic red sky at dusk from the deck',cap:"On the ferry deck at dusk — a safety sign just visible, the river ablaze with red and amber light above.",clues:['Ferry deck visible in the foreground','Safety sign at lower left','River surface lit by dramatic sky']},
+  {id:'8f1f0a3c',stop:0,lat:-16.1670,lng:145.4175,loc:'Daintree River — vivid orange sunset reflection',cap:"A blazing orange sunset on the Daintree River. Signed MFS — Matt was right here at the water's edge.",clues:['River reflection of orange sunset','Dense treeline silhouette','Daintree River bank, not the beach']},
+  {id:'57a40b9f',stop:0,lat:-16.1678,lng:145.4172,loc:'Daintree River — black and white, treeline and water',cap:"Stripped of colour the river becomes pure form — sun disc, reflected light, ancient treeline.",clues:['Monochrome river scene','Round sun visible above treeline','Calm reflective water surface']},
+  {id:'f8bc0d90',stop:0,lat:-16.1615,lng:145.4228,loc:'Daintree River — from a boat looking upstream',cap:"Looking upstream from a river cruise — the boat bow in foreground, rainforest banks closing in on both sides.",clues:['Boat bow visible in foreground','Looking upstream on the river','Rainforest walls both sides of the water']},
+  {id:'b63f147b',stop:0,lat:-16.1398,lng:145.4130,loc:'Daintree River mouth — coastal water at dusk with sailboats',cap:"Sailboats at anchor in the calm water near the river mouth, a mountain range rising behind at dusk.",clues:['Two sailboats anchored on calm water','Mountain range silhouette behind','Dusk sky, coastal estuary setting']},
+  /* Alexandra Range */
+  {id:'d7733863',stop:1,lat:-16.1865,lng:145.4185,loc:'Alexandra Range — Coral Sea vertical at dusk',cap:"Shot from the Range lookout — a vertical slice of the Coral Sea turning pink and amber at dusk.",clues:['Steep descent to the sea','Vertical sunset light on open water','High elevation, no foreground vegetation']},
+  {id:'2967a22e',stop:1,lat:-16.1867,lng:145.4183,loc:'Alexandra Range — golden hour over the Coral Sea',cap:"Golden hour from the Alexandra Range. The Coral Sea and distant reef islands glow amber.",clues:['Elevated coastal vantage','Gold and pink sky, open horizon','Reef islands faintly visible in distance']},
+  {id:'11271565',stop:1,lat:-16.1870,lng:145.4187,loc:'Alexandra Range — fern fronds framing the river valley',cap:"Ancient fern fronds frame the Daintree River valley below the Range. These ferns are 130 million years old.",clues:['Large ancient fern species foreground','River visible far below','Dense rainforest canopy mid-ground']},
+  {id:'327520a1',stop:1,lat:-16.1862,lng:145.4181,loc:'Alexandra Range — sunbird on fern fronds',cap:"An olive-backed sunbird perches between fern croziers on the Range — iridescent blue-green and gold.",clues:['Tiny colourful bird','Fern frond croziers in background','High in the rainforest canopy zone']},
+  /* Cow Bay */
+  {id:'d482d46d',stop:2,lat:-16.2055,lng:145.4497,loc:'Cow Bay — aerial panoramic below Cape Kimberley',cap:"Matt's aerial of Cow Bay — the tiny community tucked between mountain and sea below Cape Kimberley.",clues:['Small coastal community visible','Mountain rises steeply behind','Bay curves away to the right']},
+  {id:'0fbebbb1',stop:2,lat:-16.2180,lng:145.4462,loc:'Cow Bay Road — cassowary crossing warning signs',cap:"Before and after — cassowary crossing signs on the Cape Tribulation Road through Cow Bay. These birds have the right of way.",clues:['Road signs in a tropical setting','Cassowary silhouette on signage','Warning signs both sides of the road']},
+  {id:'8488e24f',stop:2,lat:-16.2197,lng:145.4478,loc:'Cow Bay — cassowary adult with two striped chicks',cap:"A southern cassowary leads its two chicks through the undergrowth. The striped juveniles are weeks old.",clues:['Adult cassowary with juvenile chicks','Striped pattern on the young birds','Dense rainforest floor, leaf litter']},
+  {id:'306ce789',stop:2,lat:-16.2208,lng:145.4470,loc:'Cow Bay Road — two baby cassowary chicks face to face',cap:"Two baby cassowaries face each other on the tarmac — tiny puffed forms with the distinctive stripe pattern.",clues:['Very young chicks, striped pattern','On road surface, face to face','No adult visible in the frame']},
+  {id:'ce298454',stop:2,lat:-16.2192,lng:145.4485,loc:'Cow Bay rainforest track — young cassowary close-up',cap:"A young cassowary holds its ground on a dirt track — the turquoise and red neck colouring already vivid.",clues:['Close-up of a juvenile cassowary','Blue and red neck colouring visible','Dirt track, leaf litter, mid-shot']},
+  {id:'b1db114c',stop:2,lat:-16.2215,lng:145.4498,loc:'Cow Bay car park — cassowary in the open',cap:"A cassowary strides through the car park. Shot on an OPPO — right place, right moment.",clues:['Open car park setting','Cassowary walking at close range','Shot on a phone — candid, unposed']},
+  {id:'d2caaf2a',stop:2,lat:-16.2172,lng:145.4492,loc:'Cow Bay — sunbird feeding chicks in a hanging nest',cap:"A sunbird at a hanging woven nest feeding tiny chicks — a blink-and-miss moment on the Cow Bay walk.",clues:['Hanging woven nest pendant','Adult sunbird at nest entrance','Tropical understory setting']},
+  {id:'d650d19f',stop:2,lat:-16.2175,lng:145.4494,loc:'Cow Bay — sunbird nest close-up with chicks',cap:"Extreme close-up of a sunbird nest — the tiny chicks just visible inside the woven cup.",clues:['Woven pendant nest in extreme close-up','Chick heads just visible at entrance','Fine grasses and fibres in nest structure']},
+  {id:'cd360eb6',stop:2,lat:-16.2173,lng:145.4490,loc:'Cow Bay — olive-backed sunbird on a leaf, close-up',cap:"An olive-backed sunbird posing on a broad tropical leaf — the iridescent plumage at close range.",clues:['Bright iridescent plumage','Perched on a single large leaf','Tropical understory, shallow depth of field']},
+  /* Thornton Beach */
+  {id:'1208a739',stop:3,lat:-16.2467,lng:145.4700,loc:'Thornton Beach — aerial drone view of the bay at sunset',cap:"Thornton Beach at sunset from a drone — where the ancient rainforest drops straight into the Coral Sea.",clues:['Beach arced around a bay','Rainforest meets beach edge directly','Drone elevation, no track or road visible']},
+  {id:'7a2361bd',stop:3,lat:-16.2483,lng:145.4717,loc:'Thornton Beach — rock platform at low tide (colour)',cap:"Thornton Beach's rock platform at low tide — rich green algae, a small island sits offshore to the right.",clues:['Algae-covered flat rock foreground','Small island sitting offshore','Tropical low-tide tidal platform']},
+  {id:'65404223',stop:3,lat:-16.2484,lng:145.4717,loc:'Thornton Beach — rock platform (black and white)',cap:"Same rock platform, stripped to light and shadow. Low tide at Thornton Beach.",clues:['Monochrome seascape','Flat rock foreground, island mid-distance','Same location as adjacent colour shot']},
+  {id:'4c6c3477',stop:3,lat:-16.2480,lng:145.4713,loc:'Thornton Beach — tidal flat, low-angle',cap:"Low-angle on the tidal flat — a thin film of water mirrors the sky overhead.",clues:['Extreme low-angle perspective','Thin water film on flat surface','Sky reflected in foreground water']},
+  {id:'afe4122c',stop:3,lat:-16.2485,lng:145.4718,loc:'Thornton Beach — rock platform close study',cap:"Close study of the rock platform surface — salt, algae, and time compressed into texture.",clues:['Moss and algae detail, close range','Salt-weathered rock face','Intertidal zone between high and low water']},
+  {id:'74fe3c94',stop:3,lat:-16.2481,lng:145.4715,loc:'Thornton Beach — low-angle rock and Coral Sea',cap:"Rock foreground, Coral Sea behind — Thornton Beach rock platform in afternoon light.",clues:['Rock foreground, wide sea horizon','Afternoon sidelight on rock texture','Low-angle shot from the intertidal zone']},
+  {id:'08f7a6c7',stop:3,lat:-16.2600,lng:145.4748,loc:'Aerial — rainforest ridge under tropical storm clouds',cap:"A tropical storm builds over the rainforest ridge between Thornton Beach and Cape Tribulation. Drone shot.",clues:['Dramatic storm cloud build','Unbroken rainforest canopy below','Aerial — no ground features visible, pure forest']},
+  {id:'9a6eb1c4',stop:3,lat:-16.2518,lng:145.4698,loc:'Thornton Beach area — feral water buffalo at night',cap:"A feral water buffalo lit by spotlight at night — introduced and imposing, occasionally seen near the road.",clues:['Night photograph','Large dark animal in spotlight','Dense vegetation at the frame edge']},
+  /* Cape Tribulation */
+  {id:'742955d5',stop:4,lat:-16.2850,lng:145.4783,loc:'Cape Tribulation headland — aerial with storm cloud and beach below',cap:"Cape Tribulation headland from above — a storm cloud sits on the summit, Myall Beach visible below the cliff.",clues:['Dramatic headland profile from air','Cloud on the summit, beach below','This is the end of the sealed road']},
+  {id:'5eef1806',stop:4,lat:-16.3015,lng:145.4832,loc:'Myall Beach — driftwood tree with Mackay Island offshore',cap:"The leaning driftwood tree is a Myall Beach landmark. Mackay Island sits offshore — this is the end of the route.",clues:['Driftwood tree leaning toward water','Island visible offshore','Moody sky, remote feel']},
+  {id:'99baceda',stop:4,lat:-16.3017,lng:145.4833,loc:'Myall Beach — full view, driftwood and Mackay Island',cap:"Matt's landmark driftwood tree on Myall Beach — the view that defines the end of the Daintree route.",clues:['Same distinctive driftwood tree','Larger perspective, Coral Sea visible','Island silhouette to the right']},
+  {id:'c88472d2',stop:4,lat:-16.3017,lng:145.4833,loc:'Myall Beach — sunset with driftwood and island silhouette',cap:"Sunset at Myall Beach. The silhouette sequence Matt returned to photograph again and again.",clues:['Orange and gold sky','Tree silhouette against dusk light','Island to the right, Coral Sea beyond']},
+  {id:'6cdbddde',stop:4,lat:-16.3018,lng:145.4834,loc:'Myall Beach — deep sunset, driftwood silhouette',cap:"Deep in the sunset. The same tree, the same island — different light, different hour.",clues:['Deep orange sky at last light','Driftwood fully silhouetted','Island on the horizon, barely visible']},
+  {id:'5dff0420',stop:4,lat:-16.3016,lng:145.4832,loc:'Myall Beach — dawn light, softer tones',cap:"Same beach, pre-dawn. The palette shifts completely — cooler, quieter, different world.",clues:['Pale early morning light','Cooler colour temperature than sunset shots','Same landscape — dawn rather than dusk']},
+  {id:'e0a562f4',stop:4,lat:-16.3016,lng:145.4833,loc:'Myall Beach — golden hour with tree texture detail',cap:"Golden hour at Myall Beach. Matt was here early and often — the light makes the driftwood glow.",clues:['Warm golden light on wood texture','Tree texture and form visible','Island to the right of frame']},
+  {id:'e7b89067',stop:4,lat:-16.3015,lng:145.4835,loc:'Myall Beach — full beach panoramic at dusk',cap:"The full panoramic at dusk — from the driftwood tree to the reef beyond Mackay Island.",clues:['Wide beach view, full scene','Dusk colours, reef glow','Both tree and island in frame']},
+  {id:'fb23db5e',stop:4,lat:-16.2900,lng:145.4815,loc:'Cape Tribulation beach — bare tree silhouette with headland',cap:"Taken on 07 January 2021 — a bare tree frames the headland at Cape Tribulation in last light.",clues:['Bare dead tree framing the shot','Headland silhouette behind','Film-strip grain, last light quality']},
+  {id:'32007e40',stop:4,lat:-16.3017,lng:145.4832,loc:'Cape Tribulation beach — driftwood tree vertical sunset',cap:"A vertical portrait of the driftwood tree at sunset — captured on a phone as a lock screen.",clues:['Vertical composition (portrait)','Single driftwood tree, monumental','Warm sunset palette, sky above sea']},
+  {id:'83bcb717',stop:4,lat:-16.2930,lng:145.4818,loc:'Cape Tribulation — leaf heart framing the sunset',cap:"Two leaves held to frame a heart shape over the sunset water. Shot on Samsung Galaxy A30.",clues:['Two leaves composing a heart','Shot through natural framing','Sunset sea and sky behind']},
 ];
 
-/* 12 challenge questions — one per slot */
 const CHALLENGE_IDS = [
-  '64673235', /* ferry aerial */
-  '9d979d79', /* ferry deck sunset */
-  '11271565', /* range ferns */
-  'd482d46d', /* cow bay aerial */
-  '8488e24f', /* cassowary + chicks */
-  'ce298454', /* cassowary on track */
-  '1208a739', /* thornton aerial */
-  '7a2361bd', /* thornton rocks colour */
-  '08f7a6c7', /* storm aerial */
-  '742955d5', /* cape trib headland aerial */
-  '99baceda', /* myall driftwood */
-  '83bcb717', /* leaf heart sunset */
+  '64673235','9d979d79','11271565','d482d46d','8488e24f','ce298454',
+  '1208a739','7a2361bd','08f7a6c7','742955d5','99baceda','83bcb717'
 ];
 
-/* Photo URL map — populated from PHOTO_URLS constant below */
 const PHOTO_URLS = {
-  '64673235': '/_blob/b0abf8696182e9fe32153fb60e9e7911',
-  'd7733863': '/_blob/57afb6c1ebe4a64ffe88e9ca64f2d9cb',
-  '2967a22e': '/_blob/4ab06f37660f79a104369c37f89ebc3b',
-  '11271565': '/_blob/94a9d958a683117f286f122271a7d906',
-  'd482d46d': '/_blob/771acbe7aecde94d19b456f75e28bca4',
-  '1208a739': '/_blob/95cef401f27b7bc44d31a9b5b802f15c',
-  '7a2361bd': '/_blob/d800869d30dc18c0af6b732f3721b46d',
-  '65404223': '/_blob/3f7dcad0de43b18b442024b583bdf2a6',
-  '4c6c3477': '/_blob/a46b199bc9a5611847798eec00cc70c4',
-  'afe4122c': '/_blob/bff05abc136d0c873d75d2daabdab5d2',
-  '74fe3c94': '/_blob/bb1857bc2d85ab660d7d42b369885bd7',
-  '08f7a6c7': '/_blob/3e2c50a544299729f303c35194d09d61',
-  '742955d5': '/_blob/230662303dc7d06bebb8748605e7959d',
-  '5eef1806': '/_blob/cfeeebbe42991f8fe2707e861ae58ad2',
-  '99baceda': '/_blob/b3320c4e88b1c93f42a9f89e3296bd45',
-  'c88472d2': '/_blob/8a4b038bb265fccc88aa4628032a59fb',
-  '6cdbddde': '/_blob/ac54f73f46bb46d02b5259c8ad09609f',
-  '5dff0420': '/_blob/a4e8ae2961f54a9167eee1c27e3d3769',
-  'e0a562f4': '/_blob/e23907c1db68e08ff98616ba600033b7',
-  'e7b89067': '/_blob/96f4b5ee3a65228def8166b47e6b4122',
-  /* River & Ferry */
-  '8f1f0a3c': '/_blob/8abf03dc74c4a26a8ac439a1f209cdde',
-  '57a40b9f': '/_blob/9f8c8bbc321ebe7c1ecb18c6d304ed5d',
-  'f8bc0d90': '/_blob/3eed03f754361e877957f9ad56e8dff4',
-  '9d979d79': '/_blob/d59746e8dc54a0e5b3527b19c3e8e351',
-  'b63f147b': '/_blob/aa60f9eab8a28ea8d8e6e0acfe3b3e76',
-  /* Cassowary */
-  '0fbebbb1': '/_blob/0fda021a24f35b60e139c59b1c3efa07',
-  '8488e24f': '/_blob/acc06ece7a567100e15f8403e0df2e55',
-  '306ce789': '/_blob/0f985032a8bb1f666cc759f175531a1a',
-  'ce298454': '/_blob/dd11a2a34e2f833ce78afe1358083a44',
-  'b1db114c': '/_blob/2e8d6ba78db29bfce77ba6d963284b8c',
-  /* Sunbird */
-  '327520a1': '/_blob/540916d85dcd2398b64a931fab37fdea',
-  'd2caaf2a': '/_blob/cc54a8127855bf076184962d73dfb631',
-  'd650d19f': '/_blob/f0d55a4384adfe18da8fe822e15af24f',
-  'cd360eb6': '/_blob/c24749bb07d9bc143b5992c9dd5ee557',
-  /* Nocturnal */
-  '9a6eb1c4': '/_blob/c5f7949e051e54ac3b83855f9402fe61',
-  /* Extra beach */
-  'fb23db5e': '/_blob/64aa4937d2d332735ec7d610e39e32b1',
-  '32007e40': '/_blob/ecb14fc245a9b1297dfccf1c2c99ee67',
-  '83bcb717': '/_blob/2965424b158ad318aad33d640bd57bc5',
+  '64673235':'/_blob/b0abf8696182e9fe32153fb60e9e7911',
+  'd7733863':'/_blob/57afb6c1ebe4a64ffe88e9ca64f2d9cb',
+  '2967a22e':'/_blob/4ab06f37660f79a104369c37f89ebc3b',
+  '11271565':'/_blob/94a9d958a683117f286f122271a7d906',
+  'd482d46d':'/_blob/771acbe7aecde94d19b456f75e28bca4',
+  '1208a739':'/_blob/95cef401f27b7bc44d31a9b5b802f15c',
+  '7a2361bd':'/_blob/d800869d30dc18c0af6b732f3721b46d',
+  '65404223':'/_blob/3f7dcad0de43b18b442024b583bdf2a6',
+  '4c6c3477':'/_blob/a46b199bc9a5611847798eec00cc70c4',
+  'afe4122c':'/_blob/bff05abc136d0c873d75d2daabdab5d2',
+  '74fe3c94':'/_blob/bb1857bc2d85ab660d7d42b369885bd7',
+  '08f7a6c7':'/_blob/3e2c50a544299729f303c35194d09d61',
+  '742955d5':'/_blob/230662303dc7d06bebb8748605e7959d',
+  '5eef1806':'/_blob/cfeeebbe42991f8fe2707e861ae58ad2',
+  '99baceda':'/_blob/b3320c4e88b1c93f42a9f89e3296bd45',
+  'c88472d2':'/_blob/8a4b038bb265fccc88aa4628032a59fb',
+  '6cdbddde':'/_blob/ac54f73f46bb46d02b5259c8ad09609f',
+  '5dff0420':'/_blob/a4e8ae2961f54a9167eee1c27e3d3769',
+  'e0a562f4':'/_blob/e23907c1db68e08ff98616ba600033b7',
+  'e7b89067':'/_blob/96f4b5ee3a65228def8166b47e6b4122',
+  '8f1f0a3c':'/_blob/8abf03dc74c4a26a8ac439a1f209cdde',
+  '57a40b9f':'/_blob/9f8c8bbc321ebe7c1ecb18c6d304ed5d',
+  'f8bc0d90':'/_blob/3eed03f754361e877957f9ad56e8dff4',
+  '9d979d79':'/_blob/d59746e8dc54a0e5b3527b19c3e8e351',
+  'b63f147b':'/_blob/aa60f9eab8a28ea8d8e6e0acfe3b3e76',
+  '0fbebbb1':'/_blob/0fda021a24f35b60e139c59b1c3efa07',
+  '8488e24f':'/_blob/acc06ece7a567100e15f8403e0df2e55',
+  '306ce789':'/_blob/0f985032a8bb1f666cc759f175531a1a',
+  'ce298454':'/_blob/dd11a2a34e2f833ce78afe1358083a44',
+  'b1db114c':'/_blob/2e8d6ba78db29bfce77ba6d963284b8c',
+  '327520a1':'/_blob/540916d85dcd2398b64a931fab37fdea',
+  'd2caaf2a':'/_blob/cc54a8127855bf076184962d73dfb631',
+  'd650d19f':'/_blob/f0d55a4384adfe18da8fe822e15af24f',
+  'cd360eb6':'/_blob/c24749bb07d9bc143b5992c9dd5ee557',
+  '9a6eb1c4':'/_blob/c5f7949e051e54ac3b83855f9402fe61',
+  'fb23db5e':'/_blob/64aa4937d2d332735ec7d610e39e32b1',
+  '32007e40':'/_blob/ecb14fc245a9b1297dfccf1c2c99ee67',
+  '83bcb717':'/_blob/2965424b158ad318aad33d640bd57bc5',
 };
 
-function photoUrl(id){ return PHOTO_URLS[id] || ''; }
+function photoUrl(id){ return PHOTO_URLS[id]||''; }
+
+/* ─── MAP PROJECTION ───
+   Bounding box: lat -16.31 to -16.13, lng 145.408 to 145.495
+   SVG viewBox: 0 0 340 780 */
+const LAT_MIN=-16.31, LAT_MAX=-16.13, LNG_MIN=145.408, LNG_MAX=145.495;
+const SVG_W=340, SVG_H=780, PAD=24;
+function project(lat,lng){
+  const x = PAD + (lng - LNG_MIN)/(LNG_MAX - LNG_MIN) * (SVG_W - PAD*2);
+  const y = PAD + (LAT_MAX - lat)/(LAT_MAX - LAT_MIN) * (SVG_H - PAD*2);
+  return {x,y};
+}
 
 /* ─── GAME STATE ─── */
 let challenges=[],round=0,score=0,cluesUsed=0,answered=false;
@@ -365,16 +564,14 @@ function buildChallenges(){
 function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
 
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>{
-    s.classList.toggle('active',s.id===id);
-  });
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+  window.scrollTo(0,0);
 }
 
 /* ─── INTRO ─── */
 document.getElementById('btnStart').addEventListener('click',()=>{
   buildChallenges();round=0;score=0;
-  showRound();
-  showScreen('game');
+  showRound();showScreen('game');
 });
 
 /* ─── ROUND ─── */
@@ -382,37 +579,30 @@ function showRound(){
   answered=false;cluesUsed=0;
   const c=challenges[round];
   const p=c.photo;
-
   document.getElementById('roundLabel').textContent=round+1;
   document.getElementById('totalLabel').textContent=challenges.length;
   document.getElementById('progressFill').style.width=((round/challenges.length)*100)+'%';
   document.getElementById('scoreVal').textContent=score;
-  document.getElementById('photoRoundLbl').textContent='Challenge '+(round+1);
+  document.getElementById('challengeRoundLbl').textContent='Challenge '+(round+1)+' of '+challenges.length;
 
-  /* Photo */
   const img=document.getElementById('challengeImg');
   img.src=photoUrl(p.id);
-  img.onerror=()=>{img.style.height='180px';img.style.objectFit='none';};
+  img.onerror=()=>{img.style.height='220px';img.style.objectFit='none';};
 
-  /* Clues */
   document.getElementById('clueList').innerHTML='';
   const clueBtn=document.getElementById('clueBtn');
   clueBtn.disabled=false;
-  clueBtn.textContent='Reveal a clue (−25 pts)';
+  clueBtn.innerHTML='<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Reveal a clue (−25 pts)';
 
-  /* Options */
   const grid=document.getElementById('optGrid');
   grid.innerHTML='';
   c.options.forEach(stopIdx=>{
     const btn=document.createElement('button');
-    btn.className='opt-btn';
-    btn.textContent=STOPS[stopIdx];
-    btn.dataset.stop=stopIdx;
+    btn.className='opt-btn';btn.textContent=STOPS[stopIdx];btn.dataset.stop=stopIdx;
     btn.addEventListener('click',()=>chooseOption(stopIdx,p.stop,btn,c));
     grid.appendChild(btn);
   });
 
-  /* Hide feedback + next */
   document.getElementById('feedback').classList.add('hidden');
   document.getElementById('btnNext').classList.add('hidden');
 }
@@ -423,35 +613,28 @@ document.getElementById('clueBtn').addEventListener('click',()=>{
   const p=challenges[round].photo;
   if(cluesUsed>=p.clues.length)return;
   const item=document.createElement('div');
-  item.className='clue-item';
-  item.textContent=p.clues[cluesUsed];
+  item.className='clue-item';item.textContent=p.clues[cluesUsed];
   document.getElementById('clueList').appendChild(item);
   cluesUsed++;
   const btn=document.getElementById('clueBtn');
   if(cluesUsed>=p.clues.length){btn.disabled=true;btn.textContent='No more clues';}
 });
 
+/* ─── PHOTO EXPAND (game) ─── */
+document.getElementById('challengeImg').addEventListener('click',()=>openLb(photoUrl(challenges[round].photo.id)));
+document.getElementById('photoExpandBtn').addEventListener('click',()=>openLb(photoUrl(challenges[round].photo.id)));
+
 /* ─── ANSWER ─── */
 function chooseOption(chosen,correct,btn,c){
   if(answered)return;
   answered=true;
-
-  /* Disable all */
   document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
-
   const isRight=chosen===correct;
   const pts=isRight?Math.max(25,100-cluesUsed*25):0;
   if(isRight)score+=pts;
-
-  /* Style buttons */
   btn.classList.add(isRight?'correct':'wrong');
-  if(!isRight){
-    document.querySelectorAll('.opt-btn').forEach(b=>{
-      if(parseInt(b.dataset.stop)===correct)b.classList.add('reveal');
-    });
-  }
+  if(!isRight){document.querySelectorAll('.opt-btn').forEach(b=>{if(parseInt(b.dataset.stop)===correct)b.classList.add('reveal');});}
 
-  /* Feedback */
   const fb=document.getElementById('feedback');
   fb.className='feedback '+(isRight?'correct':'wrong');
   fb.innerHTML=(isRight
@@ -459,11 +642,8 @@ function chooseOption(chosen,correct,btn,c){
     :`<b>Not quite — this was ${STOPS[correct]}</b>`)
     +`<div class="cap">${c.photo.cap}</div>`;
   fb.classList.remove('hidden');
-
-  /* Audit in score box (cosmetic) */
   document.getElementById('scoreVal').textContent=score;
 
-  /* Next button */
   const nextBtn=document.getElementById('btnNext');
   nextBtn.classList.remove('hidden');
   nextBtn.textContent=round<challenges.length-1?'Next Photo →':'See the Gallery';
@@ -471,8 +651,7 @@ function chooseOption(chosen,correct,btn,c){
 
 document.getElementById('btnNext').addEventListener('click',()=>{
   round++;
-  if(round<challenges.length){showRound();}
-  else{showGallery();}
+  if(round<challenges.length){showRound();}else{showGallery();}
 });
 
 /* ─── GALLERY ─── */
@@ -487,24 +666,191 @@ function showGallery(){
   else rank='The land teaches you. Try again.';
   document.getElementById('finalRank').textContent=`${pct}% — ${rank}`;
 
-  /* Build grid of all 20 photos */
   const grid=document.getElementById('photoGrid');
   grid.innerHTML='';
-  GALLERY.forEach(p=>{
-    const tile=document.createElement('div');tile.className='photo-tile';
+  GALLERY.forEach((p,i)=>{
+    const tile=document.createElement('div');
+    tile.className='photo-tile';tile.dataset.idx=i;
     tile.innerHTML=`<img src="${photoUrl(p.id)}" alt="${p.loc}" loading="lazy"><div class="info"><div class="loc">${p.loc}</div><div class="cap">${p.cap}</div><span class="stop-tag">${STOPS[p.stop]}</span></div>`;
     tile.querySelector('img').addEventListener('click',()=>openLb(photoUrl(p.id)));
     grid.appendChild(tile);
   });
 
+  buildRouteMap();
   showScreen('gallery');
+}
+
+/* ─── ROUTE MAP ─── */
+function buildRouteMap(){
+  const svg=document.getElementById('routeMap');
+  svg.innerHTML='';
+  const ns='http://www.w3.org/2000/svg';
+
+  /* Background */
+  const bg=document.createElementNS(ns,'rect');
+  bg.setAttribute('width',SVG_W);bg.setAttribute('height',SVG_H);
+  bg.setAttribute('fill','#0c1812');svg.appendChild(bg);
+
+  /* Water / sea hint on right side */
+  const sea=document.createElementNS(ns,'rect');
+  sea.setAttribute('x',SVG_W*0.55);sea.setAttribute('y',0);
+  sea.setAttribute('width',SVG_W*0.45);sea.setAttribute('height',SVG_H);
+  sea.setAttribute('fill','rgba(100,160,200,0.06)');svg.appendChild(sea);
+
+  /* Route road line — draw the road following actual GPS order */
+  const routeStops = [
+    {lat:-16.1398,lng:145.4130}, /* river mouth area */
+    {lat:-16.1667,lng:145.4167}, /* ferry */
+    {lat:-16.1870,lng:145.4187}, /* range */
+    {lat:-16.2055,lng:145.4497}, /* cow bay */
+    {lat:-16.2467,lng:145.4700}, /* thornton */
+    {lat:-16.2850,lng:145.4783}, /* cape trib headland */
+    {lat:-16.3017,lng:145.4833}, /* myall beach */
+  ];
+  const pts=routeStops.map(s=>project(s.lat,s.lng));
+  let d=`M${pts[0].x},${pts[0].y}`;
+  for(let i=1;i<pts.length;i++){
+    const px=pts[i-1],cx=pts[i];
+    const cpx=(px.x+cx.x)/2,cpy=(px.y+cx.y)/2;
+    d+=` Q${cpx},${(px.y+cpy)/2} ${cx.x},${cx.y}`;
+  }
+  const road=document.createElementNS(ns,'path');
+  road.setAttribute('d',d);road.setAttribute('stroke','rgba(143,184,70,.35)');
+  road.setAttribute('stroke-width','3');road.setAttribute('fill','none');
+  road.setAttribute('stroke-dasharray','8 5');road.setAttribute('stroke-linecap','round');
+  svg.appendChild(road);
+
+  /* Stop labels */
+  const stopPts=[
+    {stop:0,label:'Ferry & River'},
+    {stop:1,label:'Alexandra Range'},
+    {stop:2,label:'Cow Bay'},
+    {stop:3,label:'Thornton Beach'},
+    {stop:4,label:'Cape Tribulation'},
+  ];
+  const stopLatlng=[-16.1667,-16.1870,-16.2055,-16.2467,-16.2850].map((lat,i)=>{
+    const lngs=[145.4167,145.4187,145.4497,145.4700,145.4783];
+    return {lat,lng:lngs[i],stop:i};
+  });
+  stopLatlng.forEach((s,i)=>{
+    const pt=project(s.lat,s.lng);
+    const lbl=document.createElementNS(ns,'text');
+    lbl.setAttribute('x',pt.x-12);lbl.setAttribute('y',pt.y-14);
+    lbl.setAttribute('fill',STOP_COLORS[i]);lbl.setAttribute('font-size','10');
+    lbl.setAttribute('font-family','Inter,system-ui,sans-serif');
+    lbl.setAttribute('letter-spacing','0.08em');lbl.setAttribute('text-anchor','end');
+    lbl.setAttribute('font-weight','600');
+    lbl.textContent=stopPts[i].label;
+    svg.appendChild(lbl);
+  });
+
+  /* Photo pins — cluster nearby ones slightly */
+  const tooltip=document.getElementById('mapTooltip');
+  GALLERY.forEach((p,idx)=>{
+    const pt=project(p.lat,p.lng);
+    /* small random jitter for overlapping pins */
+    const jx=(Math.random()-.5)*8, jy=(Math.random()-.5)*8;
+    const cx=pt.x+jx, cy=pt.y+jy;
+    const color=STOP_COLORS[p.stop];
+
+    const g=document.createElementNS(ns,'g');
+    g.style.cursor='pointer';
+
+    /* outer glow */
+    const glow=document.createElementNS(ns,'circle');
+    glow.setAttribute('cx',cx);glow.setAttribute('cy',cy);glow.setAttribute('r','9');
+    glow.setAttribute('fill',color);glow.setAttribute('opacity','0.18');
+    g.appendChild(glow);
+
+    /* pin dot */
+    const dot=document.createElementNS(ns,'circle');
+    dot.setAttribute('cx',cx);dot.setAttribute('cy',cy);dot.setAttribute('r','5');
+    dot.setAttribute('fill',color);dot.setAttribute('stroke','rgba(255,255,255,0.4)');
+    dot.setAttribute('stroke-width','1.5');
+    g.appendChild(dot);
+
+    /* hover / click events */
+    g.addEventListener('mouseenter',(e)=>{
+      glow.setAttribute('opacity','0.5');
+      dot.setAttribute('r','7');
+      document.getElementById('ttStop').textContent=STOPS[p.stop];
+      document.getElementById('ttLoc').textContent=p.loc;
+      tooltip.style.display='block';
+      const rect=svg.getBoundingClientRect();
+      const svgScale=rect.width/SVG_W;
+      let tx=cx*svgScale+rect.left-tooltip.offsetWidth/2;
+      let ty=cy*svgScale+rect.top-60;
+      tx=Math.max(4,Math.min(tx,window.innerWidth-tooltip.offsetWidth-4));
+      tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
+    });
+    g.addEventListener('mouseleave',()=>{
+      glow.setAttribute('opacity','0.18');dot.setAttribute('r','5');
+      tooltip.style.display='none';
+    });
+    g.addEventListener('click',()=>{
+      tooltip.style.display='none';
+      /* switch to photos tab and scroll to tile */
+      switchTab('photos');
+      setTimeout(()=>{
+        const tile=document.querySelector(`.photo-tile[data-idx="${idx}"]`);
+        if(tile){
+          tile.scrollIntoView({behavior:'smooth',block:'center'});
+          tile.classList.add('highlighted');
+          setTimeout(()=>tile.classList.remove('highlighted'),2000);
+        }
+      },150);
+    });
+
+    svg.appendChild(g);
+  });
+
+  /* Compass rose */
+  const cr=document.createElementNS(ns,'g');
+  cr.setAttribute('transform',`translate(${SVG_W-36},${SVG_H-60})`);
+  const crBg=document.createElementNS(ns,'circle');
+  crBg.setAttribute('cx','0');crBg.setAttribute('cy','0');crBg.setAttribute('r','18');
+  crBg.setAttribute('fill','rgba(23,37,25,.8)');crBg.setAttribute('stroke','rgba(180,210,140,.2)');
+  crBg.setAttribute('stroke-width','1');cr.appendChild(crBg);
+  ['N','S'].forEach((l,i)=>{
+    const t=document.createElementNS(ns,'text');
+    t.setAttribute('x','0');t.setAttribute('y',i===0?-6:14);
+    t.setAttribute('fill',i===0?'#acd95a':'rgba(180,210,140,.4)');
+    t.setAttribute('font-size','9');t.setAttribute('font-family','Inter,sans-serif');
+    t.setAttribute('font-weight','700');t.setAttribute('text-anchor','middle');
+    t.textContent=l;cr.appendChild(t);
+  });
+  const arr=document.createElementNS(ns,'path');
+  arr.setAttribute('d','M0,-15 L3,-5 L0,0 L-3,-5 Z');arr.setAttribute('fill','#acd95a');
+  cr.appendChild(arr);
+  svg.appendChild(cr);
+}
+
+/* ─── GALLERY TABS ─── */
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
+}
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+
+/* ─── SHARE / PUBLISH ─── */
+document.getElementById('btnShare').addEventListener('click',()=>{
+  const url='https://claude.ai/artifact/RMNCM8t1RTmbsYRz6K2c7U';
+  try{
+    navigator.clipboard.writeText(url).then(()=>showToast('Link copied! Share it with your guests.'))
+      .catch(()=>showToast('Copy: '+url));
+  }catch(e){showToast('Game link: '+url);}
+});
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
 /* ─── LIGHTBOX ─── */
 function openLb(src){
-  const lb=document.getElementById('lb');
   document.getElementById('lbImg').src=src;
-  lb.classList.add('open');
+  document.getElementById('lb').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeLb(){
@@ -512,13 +858,67 @@ function closeLb(){
   document.body.style.overflow='';
 }
 window.closeLb=closeLb;
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLb();});
 
 /* ─── RESTART ─── */
 window.restartGame=function(){
   buildChallenges();round=0;score=0;
-  showRound();
-  showScreen('game');
-  window.scrollTo(0,0);
+  showRound();showScreen('game');
+};
+
+/* ─── HOST PANEL ─── */
+let hostUnlocked=false;
+document.getElementById('hostFab').addEventListener('click',openHost);
+function openHost(){
+  document.getElementById('hostOverlay').classList.add('open');
+  if(!hostUnlocked){
+    document.getElementById('pinGate').classList.remove('hidden');
+    document.getElementById('hostTools').classList.add('hidden');
+  } else {
+    document.getElementById('pinGate').classList.add('hidden');
+    document.getElementById('hostTools').classList.remove('hidden');
+  }
+}
+window.closeHost=function(){document.getElementById('hostOverlay').classList.remove('open');};
+document.getElementById('hostOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHost();});
+
+window.checkPin=function(){
+  const val=document.getElementById('pinInput').value;
+  if(val==='2468'){
+    hostUnlocked=true;
+    document.getElementById('pinGate').classList.add('hidden');
+    document.getElementById('hostTools').classList.remove('hidden');
+    document.getElementById('pinErr').textContent='';
+  } else {
+    document.getElementById('pinErr').textContent='Incorrect PIN. Try again.';
+    document.getElementById('pinInput').value='';
+  }
+};
+document.getElementById('pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPin();});
+
+/* Photo file picker */
+document.getElementById('photoFileInput').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const prev=document.getElementById('hostPreview');
+    prev.innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+  };
+  reader.readAsDataURL(f);
+});
+
+window.prepareHostSubmit=function(){
+  const stop=document.getElementById('hostStop').value;
+  const loc=document.getElementById('hostLoc').value||'(no location)';
+  const cap=document.getElementById('hostCap').value||'(no caption)';
+  const c1=document.getElementById('hostClue1').value;
+  const c2=document.getElementById('hostClue2').value;
+  const c3=document.getElementById('hostClue3').value;
+  const clues=[c1,c2,c3].filter(Boolean).join(' / ');
+  const msg=`"Add photo to Photo Match game. Stop: ${parseInt(stop)+1} — ${STOPS[stop]}. Location: ${loc}. Caption: ${cap}. Clues: ${clues}."`;
+  document.getElementById('hostInstrText').textContent=msg;
+  document.getElementById('hostInstructions').style.display='block';
+  document.getElementById('hostInstructions').scrollIntoView({behavior:'smooth'});
 };
 
 })();
