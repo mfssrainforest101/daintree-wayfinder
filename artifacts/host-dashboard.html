@@ -1,0 +1,727 @@
+<title>Host Access Dashboard · Daintree Wayfinder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Iowan+Old+Style:ital@0;1&display=swap">
+<style>
+:root {
+  --bg:#0c1912;--bg-2:#10221a;--surface:#15291f;--surface-2:#1b3327;--surface-3:#224031;
+  --line:rgba(208,200,132,.16);--line-strong:rgba(208,200,132,.32);
+  --text:#edf0e3;--muted:#a9b5a1;--faint:#76866f;
+  --accent:#a39f55;--accent-hi:#cfc67c;--accent-ink:#1a1c12;--accent-soft:rgba(163,159,85,.16);
+  --good:#8cc47e;--warn:#e3b64e;--bad:#e5735c;--info:#79b8d6;
+  --shadow:0 12px 40px rgba(0,0,0,.45);
+  --font-d:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --font-b:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r-sm:10px;--r-md:14px;--r-lg:20px;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font:15px/1.5 var(--font-b);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+h1,h2,h3{font-family:var(--font-d);font-weight:600;line-height:1.15;letter-spacing:-.01em;}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent-hi);outline-offset:2px;}
+
+/* Shell */
+.shell{max-width:1100px;margin:0 auto;padding:28px 20px 80px;}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:14px;}
+.emblem{width:48px;height:48px;color:var(--accent-hi);flex:none;}
+.brand h1{font-size:26px;}
+.brand .sub{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-hi);margin-top:2px;}
+.status-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;}
+.status-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent);}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface-2);font-weight:600;font-size:13.5px;transition:filter .15s,transform .1s;}
+.btn:hover{filter:brightness(1.08);}
+.btn:active{transform:scale(.98);}
+.btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink);letter-spacing:.06em;text-transform:uppercase;font-size:12.5px;}
+.btn.ghost{background:transparent;}
+.btn.danger{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent);background:transparent;}
+.btn.sm{min-height:34px;padding:0 12px;font-size:12.5px;}
+.btn.on{background:color-mix(in srgb,var(--accent) 28%,var(--surface-2));border-color:var(--accent);}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;}
+.span-4{grid-column:span 4;}.span-6{grid-column:span 6;}.span-8{grid-column:span 8;}.span-12{grid-column:span 12;}
+@media(max-width:900px){.span-4,.span-6,.span-8{grid-column:span 12;}}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;position:relative;overflow:hidden;}
+.card.highlight{background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 14%,var(--surface)),var(--surface));border-color:var(--line-strong);}
+.card .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-hi);font-weight:600;margin-bottom:8px;}
+.card h2{font-size:20px;margin-bottom:6px;}
+.card h3{font-size:17px;margin-bottom:4px;}
+.card p.muted{color:var(--muted);font-size:13.5px;}
+.card .foot{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+/* Stats */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;}
+@media(max-width:600px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+.stat{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;}
+.stat b{display:block;font-family:var(--font-d);font-size:28px;font-variant-numeric:tabular-nums;line-height:1.1;}
+.stat span{font-size:11px;color:var(--muted);}
+.stat.good b{color:var(--good);}.stat.warn b{color:var(--warn);}.stat.bad b{color:var(--bad);}.stat.info b{color:var(--info);}
+
+/* Checklist */
+.checklist{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.check-row{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);}
+.check-row .dot{width:24px;height:24px;border-radius:50%;flex:none;display:grid;place-items:center;margin-top:1px;}
+.check-row .dot.ok{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good);}
+.check-row .dot.no{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn);}
+.check-row .dot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+.check-row b{display:block;font-size:14px;}
+.check-row .s{font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+/* Quick links */
+.quick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px;}
+.quick button{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line);text-align:left;color:var(--text);min-height:88px;transition:border-color .15s,background .15s,transform .1s;}
+.quick button:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface-2));}
+.quick button:active{transform:scale(.98);}
+.quick svg{width:24px;height:24px;color:var(--accent-hi);stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.quick b{font-size:14px;}.quick span{font-size:11.5px;color:var(--muted);}
+
+/* Log */
+.log{display:flex;flex-direction:column;margin-top:8px;}
+.log-item{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px;}
+.log-item:last-child{border-bottom:0;}
+.log-item .t{color:var(--faint);font-variant-numeric:tabular-nums;min-width:78px;flex:none;font-size:12px;}
+.log-item .m{flex:1;min-width:0;}
+
+/* Access levels */
+.levels{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px;}
+.level{padding:14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);}
+.level .tag{display:inline-block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;margin-bottom:8px;background:var(--surface-3);color:var(--muted);}
+.level.matt .tag{background:color-mix(in srgb,var(--accent) 28%,transparent);color:var(--text);}
+.level.andrew .tag{background:color-mix(in srgb,var(--good) 22%,transparent);color:var(--good);}
+.level.visitor .tag{background:color-mix(in srgb,var(--info) 18%,transparent);color:var(--info);}
+.level h3{font-size:16px;margin-bottom:4px;}
+.level ul{margin:8px 0 0 16px;font-size:12.5px;color:var(--muted);}
+.level li{margin:3px 0;}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid currentColor;}
+.badge.live{color:var(--good);}.badge.pending{color:var(--warn);}.badge.locked{color:var(--faint);}
+
+.hidden{display:none!important;}
+
+/* Gate */
+.gate{position:fixed;inset:0;z-index:100;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;padding:24px;}
+.gate-card{width:100%;max-width:360px;background:var(--bg-2);border:1px solid var(--line-strong);border-radius:22px;padding:28px 24px;box-shadow:var(--shadow);text-align:center;}
+.gate-card .emblem{width:72px;height:72px;margin:0 auto 16px;color:var(--accent-hi);}
+.gate-card h2{font-size:24px;margin-bottom:6px;}
+.gate-card p{color:var(--muted);font-size:14px;margin-bottom:20px;}
+.gate-card input{width:100%;min-height:48px;padding:10px 14px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface);color:var(--text);text-align:center;font-size:22px;letter-spacing:.35em;outline:none;}
+.gate-card input:focus{border-color:var(--accent-hi);}
+.gate-card .btn{width:100%;margin-top:14px;min-height:48px;}
+.gate-card .hint{font-size:12px;color:var(--faint);margin-top:14px;}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:8px;}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--surface-3);border:1px solid var(--line-strong);color:var(--text);padding:10px 16px;border-radius:999px;z-index:80;opacity:0;pointer-events:none;transition:.2s;font-size:13.5px;box-shadow:var(--shadow);max-width:90vw;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─────────── DRIVE MODE ─────────── */
+#drive{position:fixed;inset:0;z-index:60;background:#07140e;display:flex;flex-direction:column;color:#fff;}
+#driveCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.nav-top{position:relative;z-index:2;padding:calc(12px + var(--st)) 12px 0;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.maneuver{pointer-events:auto;display:flex;gap:12px;align-items:center;background:#1a73e8;border-radius:16px;padding:10px 14px;box-shadow:0 8px 24px rgba(0,0,0,.35);min-height:78px;}
+.maneuver .icon{width:54px;height:54px;flex:none;display:grid;place-items:center;}
+.maneuver .icon svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
+.maneuver .dist{font-size:28px;font-weight:700;letter-spacing:-.03em;line-height:1;}
+.maneuver .road{font-size:16px;opacity:.95;margin-top:2px;}
+.then{pointer-events:auto;align-self:flex-start;background:rgba(12,18,16,.78);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:6px 10px;font-size:13px;display:flex;gap:8px;align-items:center;backdrop-filter:blur(8px);}
+.then svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;}
+
+.nav-side{position:absolute;right:12px;top:46%;z-index:2;display:flex;flex-direction:column;gap:10px;transform:translateY(-50%);}
+.fab{width:48px;height:48px;border-radius:50%;background:rgba(18,28,24,.88);border:1px solid rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,0,0,.3);backdrop-filter:blur(8px);}
+.fab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.fab.on{color:#8cc47e;border-color:rgba(140,196,126,.5);}
+
+.speed{position:absolute;left:14px;bottom:138px;z-index:2;width:64px;height:64px;border-radius:50%;background:rgba(12,16,14,.82);border:3px solid rgba(255,255,255,.85);display:grid;place-items:center;text-align:center;line-height:1;}
+.speed b{font-size:20px;display:block;font-variant-numeric:tabular-nums;}
+.speed span{font-size:9px;letter-spacing:.08em;color:#c9d2c4;}
+.gps-pill{position:absolute;left:14px;z-index:2;background:rgba(12,18,16,.8);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 10px;font-size:12px;display:flex;gap:6px;align-items:center;}
+.gps-pill i{width:8px;height:8px;border-radius:50%;background:var(--warn);display:block;transition:.4s;}
+.gps-pill.live i{background:var(--good);box-shadow:0 0 0 3px rgba(140,196,126,.25);}
+
+.nav-bottom{position:relative;z-index:2;margin-top:auto;padding:0 12px calc(12px + var(--sb));display:flex;gap:10px;align-items:flex-end;}
+.eta{flex:1;background:rgba(14,20,18,.92);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;box-shadow:0 10px 28px rgba(0,0,0,.35);backdrop-filter:blur(10px);}
+.eta .time{font-size:28px;font-weight:700;color:#8cc47e;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;}
+.eta .sub{font-size:13px;color:#c5d0be;margin-top:3px;}
+.eta .arrive{text-align:right;}
+.eta .arrive b{display:block;font-size:18px;font-variant-numeric:tabular-nums;}
+.eta .arrive span{font-size:12px;color:#aeb8a8;}
+.exit{width:56px;height:56px;border-radius:16px;background:#c4473a;color:#fff;font-weight:700;font-size:13px;box-shadow:0 8px 18px rgba(0,0,0,.3);}
+.street-float{position:absolute;left:50%;bottom:118px;transform:translateX(-50%);z-index:2;background:rgba(10,16,13,.75);border-radius:999px;padding:6px 12px;font-size:13px;border:1px solid rgba(255,255,255,.1);white-space:nowrap;}
+
+/* Alert chips */
+.alert-bar{position:absolute;left:12px;right:68px;z-index:3;display:flex;flex-direction:column;gap:6px;max-height:200px;}
+.chip{background:rgba(16,24,20,.9);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:9px 12px;font-size:13px;display:flex;gap:8px;align-items:center;animation:chipIn .3s ease;backdrop-filter:blur(8px);}
+.chip.safety{border-color:rgba(229,115,92,.6);background:rgba(90,20,10,.85);}
+.chip.weather{border-color:rgba(121,184,214,.5);background:rgba(10,30,50,.85);}
+.chip.wildlife{border-color:rgba(140,196,126,.5);background:rgba(10,40,20,.85);}
+.chip svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex:none;}
+@keyframes chipIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+
+/* Guide voice bubble */
+.voice-bubble{position:absolute;left:12px;right:68px;background:rgba(10,18,14,.88);border:1px solid rgba(207,198,124,.3);border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.55;color:#e8edd4;z-index:3;backdrop-filter:blur(12px);animation:chipIn .4s ease;display:flex;gap:10px;align-items:flex-start;}
+.voice-bubble .av{width:32px;height:32px;border-radius:50%;background:color-mix(in srgb,var(--accent) 30%,transparent);border:1px solid var(--accent);display:grid;place-items:center;flex:none;}
+.voice-bubble .av svg{width:18px;height:18px;stroke:var(--accent-hi);fill:none;stroke-width:2;}
+
+/* Route progress bar */
+.route-prog{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.08);z-index:4;}
+.route-prog .fill{height:100%;background:var(--accent-hi);transition:width .8s ease;}
+
+/* Sim controls */
+.sim-bar{position:absolute;bottom:96px;left:12px;z-index:3;display:flex;gap:8px;flex-wrap:wrap;}
+.sim-btn{background:rgba(18,28,24,.9);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:999px;padding:7px 12px;font-size:12px;backdrop-filter:blur(6px);font-weight:600;display:flex;align-items:center;gap:6px;}
+.sim-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+.sim-btn.active{border-color:var(--warn);color:var(--warn);}
+
+/* Progress dots */
+.route-dots{position:absolute;left:12px;z-index:2;display:flex;gap:6px;align-items:center;}
+.rdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s;}
+.rdot.done{background:var(--accent-hi);}
+.rdot.now{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.2);}
+</style>
+
+<!-- PIN GATE -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <svg class="emblem" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="60" cy="60" r="55"/>
+      <path d="M60 102V58"/><path d="M60 58c-3-14-14-24-30-26 4 14 15 23 30 26Z"/><path d="M60 58c3-14 14-24 30-26-4 14-15 23-30 26Z"/>
+      <path d="M60 50c-6-12-6-24 0-34 6 10 6 22 0 34Z"/>
+      <path d="M60 70c-6-8-15-12-26-12 5 8 14 12 26 12ZM60 70c6-8 15-12 26-12-5 8-14 12-26 12Z"/>
+      <path d="M60 102c-6-4-12-5-18-4M60 102c6-4 12-5 18-4"/>
+    </svg>
+    <h2>Host Access</h2>
+    <p>Enter the host PIN to unlock content tools, sign-offs, road notices and the public pack.</p>
+    <input type="password" id="pin" inputmode="numeric" maxlength="8" placeholder="••••" autocomplete="off" aria-label="Host PIN">
+    <div class="err" id="pinErr" role="alert"></div>
+    <button class="btn primary" id="unlock">Unlock</button>
+    <p class="hint">Demo PIN: <b>2468</b></p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="shell hidden" id="dash">
+  <header class="top">
+    <div class="brand">
+      <svg class="emblem" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="60" cy="60" r="55"/>
+        <path d="M60 102V58"/><path d="M60 58c-3-14-14-24-30-26 4 14 15 23 30 26Z"/><path d="M60 58c3-14 14-24 30-26-4 14-15 23-30 26Z"/>
+        <path d="M60 50c-6-12-6-24 0-34 6 10 6 22 0 34Z"/>
+        <path d="M60 70c-6-8-15-12-26-12 5 8 14 12 26 12ZM60 70c6-8 15-12 26-12-5 8-14 12-26 12Z"/>
+        <path d="M60 102c-6-4-12-5-18-4M60 102c6-4 12-5 18-4"/>
+      </svg>
+      <div><h1>Host Access Dashboard</h1><div class="sub">Daintree Wayfinder · Matt</div></div>
+    </div>
+    <div class="actions">
+      <span class="status-pill"><span class="dot"></span> Protocol active</span>
+      <button class="btn primary sm" id="openDrive">▶ Start Drive View</button>
+      <button class="btn ghost sm" id="lockBtn">Lock</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- Protocol -->
+    <section class="card highlight span-8">
+      <div class="eyebrow">The Protocol</div>
+      <h2>Guided tour readiness</h2>
+      <p class="muted">Visitors only ever see what has passed every check: host agreed · Matt's words · shown to Andrew · signed off · pay recorded for Andrew's voice.</p>
+      <div class="stat-row">
+        <div class="stat good"><b>7</b><span>Publishable</span></div>
+        <div class="stat warn"><b>3</b><span>Waiting sign-off</span></div>
+        <div class="stat info"><b>4</b><span>Hosts agreed</span></div>
+        <div class="stat"><b>18</b><span>Total entries</span></div>
+      </div>
+      <div class="checklist">
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>Andrew speaks first</b><div class="s">Welcome to Country recorded and signed off</div></div></div>
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>Andrew speaks last</b><div class="s">Closing words recorded and signed off</div></div></div>
+        <div class="check-row"><span class="dot no"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><div><b>Pay recorded this month</b><div class="s">Nothing logged for October 2026 — Andrew's recordings stay private until paid</div></div></div>
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>Credit line set</b><div class="s">Exactly as Andrew says it</div></div></div>
+      </div>
+      <div class="foot">
+        <button class="btn primary sm" onclick="toast('Public pack exported')">Export public pack</button>
+        <button class="btn sm" onclick="toast('Payment screen — coming in next build')">Record payment</button>
+        <button class="btn sm" onclick="toast('Full host tools — coming in next build')">Full host tools</button>
+      </div>
+    </section>
+
+    <!-- Access levels -->
+    <section class="card span-4">
+      <div class="eyebrow">Who can do what</div>
+      <h2>Access levels</h2>
+      <div class="levels">
+        <div class="level matt"><span class="tag">Matt · Host</span><h3>Full control</h3><ul><li>Content, recordings, sign-offs</li><li>Host permissions &amp; QR signs</li><li>Road hazards &amp; notices</li><li>Pay ledger &amp; yarns</li><li>Backup / restore / relay</li></ul></div>
+        <div class="level andrew"><span class="tag">Andrew · Knowledge holder</span><h3>Veto &amp; voice</h3><ul><li>Any content can be pulled</li><li>Sign-off required for public</li><li>Monthly yarn (paper + log)</li><li>Must be paid for recordings</li></ul></div>
+        <div class="level visitor"><span class="tag">Visitor · Traveller</span><h3>Guide only</h3><ul><li>Sees signed, host-agreed items</li><li>Drive mode + map + reports</li><li>No edit or admin access</li></ul></div>
+      </div>
+    </section>
+
+    <!-- Quick tools -->
+    <section class="card span-12">
+      <div class="eyebrow">Host tools</div>
+      <h2>Jump to section</h2>
+      <div class="quick">
+        <button onclick="toast('Content tools — next build')"><svg viewBox="0 0 24 24"><path d="M4.5 5.5c2.8-1 5.3-.8 7.5.8v13c-2.2-1.6-4.7-1.8-7.5-.8ZM19.5 5.5c-2.8-1-5.3-.8-7.5.8v13c2.2-1.6 4.7-1.8 7.5-.8Z"/></svg><b>Content</b><span>Entries, recordings, status</span></button>
+        <button onclick="toast('Recording tools — next build')"><svg viewBox="0 0 24 24"><rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.8"/></svg><b>Record</b><span>Andrew or Matt voice</span></button>
+        <button onclick="toast('Yarn log — next build')"><svg viewBox="0 0 24 24"><path d="M5 8.5h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5Z"/><path d="M16 10h1.6a2.2 2.2 0 0 1 0 4.4H16M8 3.5v2.5M11 3.5v2.5"/></svg><b>Yarns</b><span>Monthly cuppa &amp; log</span></button>
+        <button onclick="toast('Pay ledger — next build')"><svg viewBox="0 0 24 24"><path d="M12 3.5v17M16 7.5c-.6-1.3-2.2-2-4-2-2.5 0-4 1.2-4 3s1.5 2.6 4 3.2 4.2 1.4 4.2 3.4-1.8 3.3-4.2 3.3c-2 0-3.6-.8-4.3-2.2"/></svg><b>Pay</b><span>Ledger for Andrew</span></button>
+        <button onclick="toast('Host permissions — next build')"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.2 3-5 6-5s5.4 1.8 6 5"/><path d="M15.5 5.6a3.2 3.2 0 0 1 0 5.8M17.5 14.8c1.8.6 3.1 2.2 3.5 4.7"/></svg><b>Hosts</b><span>Permission per stop</span></button>
+        <button onclick="toast('Road notices — next build')"><svg viewBox="0 0 24 24"><path d="M8 21 10.5 3M16 21 13.5 3M12 5.5v2M12 11v2M12 16.5v2"/></svg><b>Road</b><span>Hazards, notices, reports</span></button>
+        <button onclick="toast('QR signs — next build')"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5z"/></svg><b>QR Signs</b><span>Printable stop codes</span></button>
+        <button onclick="toast('Data relay — next build')"><svg viewBox="0 0 24 24"><path d="M19.5 8.5A8 8 0 0 0 5 7.5M4.5 15.5A8 8 0 0 0 19 16.5"/><path d="M19.5 3.8v4.7h-4.7M4.5 20.2v-4.7h4.7"/></svg><b>Data</b><span>Relay, tides, backup, pack</span></button>
+      </div>
+    </section>
+
+    <!-- Activity log -->
+    <section class="card span-6">
+      <div class="eyebrow">Audit</div>
+      <h2>What's happened</h2>
+      <div class="log" id="auditLog">
+        <div class="log-item"><span class="t">1 Oct</span><span class="m">Host permission for Cooper Creek: granted</span></div>
+        <div class="log-item"><span class="t">30 Sep</span><span class="m">Andrew signed off: Welcome to Country</span></div>
+        <div class="log-item"><span class="t">28 Sep</span><span class="m">Recording kept: Closing words (Andrew)</span></div>
+        <div class="log-item"><span class="t">27 Sep</span><span class="m">Shown to Andrew: Cassowary crossing note</span></div>
+        <div class="log-item"><span class="t">25 Sep</span><span class="m">Road notice added: One lane at the range</span></div>
+        <div class="log-item"><span class="t">22 Sep</span><span class="m">Pay recorded: September monthly</span></div>
+        <div class="log-item"><span class="t">20 Sep</span><span class="m">Yarn logged · Freddy came</span></div>
+      </div>
+      <div class="foot"><button class="btn sm" onclick="toast('Full audit log — next build')">Full audit log</button></div>
+    </section>
+
+    <!-- Presence -->
+    <section class="card span-6">
+      <div class="eyebrow">Map presence (opt-in)</div>
+      <h2>Other travellers</h2>
+      <p class="muted" style="margin-top:6px">Privacy-first layer for drive mode. Default off. Ephemeral session IDs, fuzzy location, short TTL.</p>
+      <div class="stat-row" style="margin-top:14px">
+        <div class="stat info"><b id="presCount">0</b><span>Sharing now</span></div>
+        <div class="stat"><b>Off</b><span>Your status</span></div>
+      </div>
+      <div class="checklist" style="margin-top:12px">
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>Ephemeral ID + 90 s TTL</b><div class="s">No history, no identity link</div></div></div>
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>Fuzzy location (±100 m)</b><div class="s">Chainage + heading band only</div></div></div>
+        <div class="check-row"><span class="dot ok"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><div><b>LDP noise optional</b><div class="s">Negligible battery cost</div></div></div>
+      </div>
+      <div class="foot"><button class="btn sm" onclick="toast('Presence settings — next build')">Presence settings</button><span class="badge locked">Not live yet</span></div>
+    </section>
+  </div>
+</div>
+
+<!-- DRIVE MODE -->
+<div class="hidden" id="drive">
+  <canvas id="driveCanvas"></canvas>
+  <div class="route-prog"><div class="fill" id="routeFill" style="width:0%"></div></div>
+
+  <!-- Top nav -->
+  <div class="nav-top">
+    <div class="maneuver" id="maneuver">
+      <div class="icon" id="manIcon">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M8 15l4 4 4-4"/></svg>
+      </div>
+      <div>
+        <div class="dist" id="manDist">0 km</div>
+        <div class="road" id="manRoad">Ferry South Bank</div>
+      </div>
+    </div>
+    <div class="then" id="thenRow">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M15 7l5 5-5 5"/></svg>
+      <span id="thenText">Then: Cow Bay Canopy — 8.5 km</span>
+    </div>
+  </div>
+
+  <!-- GPS pill -->
+  <div class="gps-pill" id="gpsPill" style="top:calc(180px + var(--st))">
+    <i></i><span id="gpsLabel">Acquiring GPS…</span>
+  </div>
+
+  <!-- Alert chips (just above ETA) -->
+  <div class="alert-bar" id="alertBar" style="bottom:92px"></div>
+
+  <!-- Guide voice bubble -->
+  <div class="voice-bubble hidden" id="voiceBubble" style="bottom:218px">
+    <div class="av"><svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4Z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></svg></div>
+    <span id="voiceText"></span>
+  </div>
+
+  <!-- Simulation controls -->
+  <div class="sim-bar" id="simBar">
+    <button class="sim-btn" id="simPlay" onclick="simToggle()">
+      <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg> Start drive
+    </button>
+    <button class="sim-btn" id="simRain" onclick="simRain()">
+      <svg viewBox="0 0 24 24"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 0 9H5a3.5 3.5 0 0 1-1-.101M8 19v1M8 22v1M12 18v2M12 21v1M16 19v1M16 22v1"/></svg> Rain event
+    </button>
+    <button class="sim-btn" id="simOff" onclick="simOffRoute()">
+      <svg viewBox="0 0 24 24"><path d="m9.5 14 2-2.5 2 2.5M12 11.5V3M3 7l9 14 9-14"/></svg> Off route
+    </button>
+    <button class="sim-btn" id="simSpeed" onclick="simFastSlow()">
+      <svg viewBox="0 0 24 24"><path d="m13 2 3 6.5h7l-5.5 4 2 7L13 16l-6.5 3.5 2-7L3 8.5h7Z"/></svg> Speed change
+    </button>
+  </div>
+
+  <!-- Route dots -->
+  <div class="route-dots" id="routeDots" style="bottom:92px"></div>
+
+  <!-- Side FABs -->
+  <div class="nav-side">
+    <button class="fab on" id="fabVoice" onclick="toggleVoice()" title="Toggle voice guide">
+      <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4Z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>
+    </button>
+    <button class="fab" id="fabFollow" onclick="toggleFollow()" title="Re-centre map">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+    </button>
+    <button class="fab" onclick="simReport()" title="Report hazard">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0ZM12 9v4M12 17h.01"/></svg>
+    </button>
+  </div>
+
+  <!-- Speed -->
+  <div class="speed"><b id="speedVal">0</b><span>km/h</span></div>
+
+  <!-- Street float -->
+  <div class="street-float" id="streetFloat">Cape Tribulation Road</div>
+
+  <!-- Bottom ETA + exit -->
+  <div class="nav-bottom">
+    <div class="eta">
+      <div>
+        <div class="time" id="etaTime">—</div>
+        <div class="sub" id="etaSub">to next stop</div>
+      </div>
+      <div>
+        <div style="font-size:13px;color:#c5d0be" id="etaDesc">Ferry South Bank</div>
+        <div style="font-size:11px;color:#8a9484;margin-top:2px" id="etaDist">0 km</div>
+      </div>
+      <div class="arrive">
+        <b id="arrTime">—</b>
+        <span id="arrLabel">Arrive</span>
+      </div>
+    </div>
+    <button class="exit" onclick="closeDrive()">End</button>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── AUTH ── */
+const gate=document.getElementById('gate'),dash=document.getElementById('dash'),
+      pinEl=document.getElementById('pin'),errEl=document.getElementById('pinErr');
+const DEMO='2468';
+function unlock(){
+  if(pinEl.value===DEMO){gate.classList.add('hidden');dash.classList.remove('hidden');try{sessionStorage.setItem('dw-host','1');}catch(e){}}
+  else{pinEl.value='';errEl.textContent='Incorrect PIN. Try again.';pinEl.focus();}
+}
+document.getElementById('unlock').addEventListener('click',unlock);
+pinEl.addEventListener('keydown',e=>{if(e.key==='Enter')unlock();errEl.textContent='';});
+document.getElementById('lockBtn').addEventListener('click',()=>{
+  try{sessionStorage.removeItem('dw-host');}catch(e){}
+  dash.classList.add('hidden');gate.classList.remove('hidden');pinEl.value='';pinEl.placeholder='••••';
+});
+try{if(sessionStorage.getItem('dw-host')==='1'){gate.classList.add('hidden');dash.classList.remove('hidden');}
+else setTimeout(()=>pinEl.focus(),200);}catch(e){setTimeout(()=>pinEl.focus(),200);}
+
+/* ── TOAST ── */
+let toastTimer=null;
+window.toast=function(msg){
+  const el=document.getElementById('toastEl');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2800);
+};
+
+/* ── ROUTE DATA ── */
+const ROUTE=[
+  {name:'Ferry South Bank',street:'Cape Tribulation Road',dist:0,
+   narration:"Welcome to the edge of the ancient world. Right now you're crossing the Daintree River — one of the oldest continuously flowing rivers in Australia. Watch the water. Saltwater crocodiles rest just below the surface.",
+   alert:null},
+  {name:'Cow Bay Canopy',street:'Cape Tribulation Road',dist:8.5,
+   narration:"You're now driving under one of the oldest rainforests on Earth. This canopy above you has been here for 130 million years. The dinosaurs knew this place.",
+   alert:{type:'wildlife',text:'Cassowary crossing zone: 40 km/h limit active'}},
+  {name:'Thornton Beach',street:'Cape Tribulation Road',dist:19.2,
+   narration:"On your left — that flash of turquoise between the trees? That's the Coral Sea. Where the rainforest ends and the reef begins. Pull over at the lookout when you see it.",
+   alert:{type:'weather',text:'Marine stingers: coastal waters — stay clear'}},
+  {name:'Cooper Creek Bridge',street:'Cape Tribulation Road',dist:28.0,
+   narration:"Crossing Cooper Creek right now. Prime estuarine crocodile habitat. Don't stop here. Keep moving. No, seriously — keep moving.",
+   alert:{type:'safety',text:'Cooper Creek: tidal estuary. Do not enter the water.'}},
+  {name:'Cape Tribulation',street:'Myall Beach Road',dist:35.5,
+   narration:"And this is it. Cape Tribulation. Captain Cook struck a reef right out there in 1770 and named his troubles. You, however, should be very happy. You made it.",
+   alert:{type:'wildlife',text:'Cassowary sighting reported here this morning'}},
+];
+
+/* ── DRIVE STATE ── */
+let driveActive=false,simRunning=false,nodeIdx=0,
+    speed=0,targetSpeed=42,voiceOn=true,followOn=true,
+    isOffRoute=false,isRaining=false,isFastSlow=false,
+    rafId=null,lastTick=0,progressMs=0,segDuration=12000,
+    particles=[];
+
+const driveEl=document.getElementById('drive');
+const canvas=document.getElementById('driveCanvas');
+const ctx=canvas.getContext('2d');
+
+/* ── CANVAS ROAD ── */
+function resizeCanvas(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;initParticles();}
+function initParticles(){
+  particles=[];
+  const n=Math.floor(canvas.width*canvas.height/3000);
+  for(let i=0;i<n;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,v:0.3+Math.random()*1.2,size:Math.random()*1.2+0.4,alpha:Math.random()*0.5+0.1});}
+}
+function drawCanvas(){
+  const w=canvas.width,h=canvas.height;
+  /* Background gradient */
+  const bg=ctx.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,isRaining?'#050e0d':'#07140e');
+  bg.addColorStop(1,isRaining?'#03090a':'#091a0f');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  /* Road perspective lines */
+  ctx.save();ctx.globalAlpha=0.12;
+  const ox=w/2,oy=h*0.42;
+  for(let i=-3;i<=3;i++){
+    ctx.beginPath();ctx.moveTo(ox+i*28,oy);ctx.lineTo(ox+i*320,h);
+    ctx.strokeStyle='#cfc67c';ctx.lineWidth=1;ctx.stroke();
+  }
+  ctx.restore();
+  /* Particles (fireflies / rain) */
+  if(isRaining){
+    ctx.save();ctx.globalAlpha=0.45;ctx.strokeStyle='#79b8d6';ctx.lineWidth=1;
+    for(const p of particles){
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-4,p.y+14);ctx.stroke();
+      p.y+=p.v*8;p.x-=3;if(p.y>h){p.y=0;p.x=Math.random()*w;}
+    }
+    ctx.restore();
+  } else {
+    ctx.save();
+    for(const p of particles){
+      ctx.globalAlpha=p.alpha*(simRunning?0.7:0.35);
+      ctx.fillStyle='#cfc67c';ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+      if(simRunning){p.y-=p.v*0.4;if(p.y<0){p.y=h;p.x=Math.random()*w;}}
+    }
+    ctx.restore();
+  }
+}
+
+/* ── BUILD ROUTE DOTS ── */
+function buildDots(){
+  const c=document.getElementById('routeDots');c.innerHTML='';
+  ROUTE.forEach((_,i)=>{const d=document.createElement('div');d.className='rdot';d.id='rdot'+i;c.appendChild(d);});
+  updateDots();
+}
+function updateDots(){
+  ROUTE.forEach((_,i)=>{
+    const d=document.getElementById('rdot'+i);if(!d)return;
+    d.className='rdot'+(i<nodeIdx?' done':i===nodeIdx?' now':'');
+  });
+}
+
+/* ── UPDATE NAV UI ── */
+function updateNav(){
+  const cur=ROUTE[nodeIdx],nxt=ROUTE[Math.min(nodeIdx+1,ROUTE.length-1)];
+  document.getElementById('manRoad').textContent=cur.name;
+  const remaining=nxt.dist-cur.dist;
+  const kmLeft=(remaining*(1-(progressMs/segDuration))).toFixed(1);
+  document.getElementById('manDist').textContent=kmLeft+' km';
+  document.getElementById('thenText').textContent='Then: '+nxt.name+' — '+nxt.dist.toFixed(1)+' km';
+  document.getElementById('routeFill').style.width=((nodeIdx+progressMs/segDuration)/ROUTE.length*100).toFixed(1)+'%';
+  document.getElementById('streetFloat').textContent=cur.street;
+  document.getElementById('etaDesc').textContent=nxt.name;
+  document.getElementById('etaDist').textContent=nxt.dist.toFixed(1)+' km total';
+  const minsLeft=Math.max(1,Math.round(remaining*(1-progressMs/segDuration)/(isRaining?30:targetSpeed)*60));
+  document.getElementById('etaTime').textContent=minsLeft+' min';
+  document.getElementById('etaSub').textContent='to '+nxt.name;
+  const arr=new Date(Date.now()+minsLeft*60000);
+  document.getElementById('arrTime').textContent=arr.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('arrLabel').textContent='ETA';
+  document.getElementById('speedVal').textContent=Math.round(speed);
+  const gps=document.getElementById('gpsPill');
+  gps.className='gps-pill'+(simRunning?' live':'');
+  document.getElementById('gpsLabel').textContent=simRunning?'GPS live · '+cur.name:'GPS acquiring…';
+  updateDots();
+}
+
+/* ── VOICE GUIDE ── */
+let voiceTimer=null;
+function showVoice(text){
+  if(!voiceOn)return;
+  clearTimeout(voiceTimer);
+  const el=document.getElementById('voiceBubble');
+  document.getElementById('voiceText').textContent=text;
+  el.classList.remove('hidden');
+  voiceTimer=setTimeout(()=>el.classList.add('hidden'),9000);
+}
+window.toggleVoice=function(){
+  voiceOn=!voiceOn;
+  document.getElementById('fabVoice').classList.toggle('on',voiceOn);
+  if(!voiceOn)document.getElementById('voiceBubble').classList.add('hidden');
+  toast(voiceOn?'Audio guide on':'Audio guide off');
+};
+window.toggleFollow=function(){
+  followOn=!followOn;
+  document.getElementById('fabFollow').classList.toggle('on',followOn);
+  toast(followOn?'Re-centred':'Following paused');
+};
+
+/* ── ALERTS ── */
+let alertTimer=null;
+function pushAlert(type,text){
+  const bar=document.getElementById('alertBar');
+  const chip=document.createElement('div');chip.className='chip '+type;
+  const icons={safety:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0ZM12 9v4M12 17h.01"/>',weather:'<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 0 9H5a3.5 3.5 0 0 1-1-.101M8 19v2M12 19v2M16 19v2"/>',wildlife:'<circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/>'};
+  chip.innerHTML=`<svg viewBox="0 0 24 24">${icons[type]||icons.safety}</svg>${text}`;
+  bar.prepend(chip);
+  setTimeout(()=>{if(chip.parentNode)chip.remove();},8000);
+}
+
+/* ── SIM EVENTS ── */
+window.simRain=function(){
+  isRaining=!isRaining;
+  document.getElementById('simRain').classList.toggle('active',isRaining);
+  if(isRaining){
+    showVoice("Okay — the rainforest just switched the weather on. That shower is coming down hard. Visibility is dropping. Take it easy here, the road matters more than the tour.");
+    pushAlert('weather','Heavy tropical squall — visibility reduced. Slow down, headlights on.');
+    toast('Rain event active');
+  } else {
+    showVoice("The squall's passed. Back to your tour — where were we?");
+    toast('Rain cleared');
+  }
+};
+window.simOffRoute=function(){
+  isOffRoute=!isOffRoute;
+  document.getElementById('simOff').classList.toggle('active',isOffRoute);
+  if(isOffRoute){
+    showVoice("Hang on — we've drifted off the Wayfinder route. Don't continue further down this road. When it's safe, turn around and I'll pick the tour back up from where we left it.");
+    pushAlert('safety','OFF-ROUTE: Unsealed track detected. Recalculating.');
+    document.getElementById('maneuver').style.background='#b94040';
+    toast('Off-route simulation');
+  } else {
+    document.getElementById('maneuver').style.background='#1a73e8';
+    showVoice("Back on the sealed road. Good. Continuing from where we left off.");
+    toast('On-route restored');
+  }
+};
+window.simFastSlow=function(){
+  isFastSlow=!isFastSlow;
+  document.getElementById('simSpeed').classList.toggle('active',isFastSlow);
+  if(isFastSlow){
+    targetSpeed=95;
+    showVoice("You're moving faster than the tour was paced for — no problem. I'll keep the commentary tighter and save the longer stories for when you've stopped somewhere safe.");
+    toast('Fast speed simulated');
+  } else {
+    targetSpeed=28;
+    showVoice("We've slowed right down. No rush at all. I'll hold the next longer story until you're moving again.");
+    toast('Slow speed simulated');
+  }
+};
+window.simReport=function(){
+  pushAlert('safety','Hazard reported at your location. Thanks — logged.');
+  toast('Hazard reported');
+};
+
+/* ── SIM LOOP ── */
+window.simToggle=function(){
+  simRunning=!simRunning;
+  const btn=document.getElementById('simPlay');
+  if(simRunning){
+    btn.innerHTML='<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pause';
+    speed=0;
+    showVoice(ROUTE[nodeIdx].narration);
+    if(ROUTE[nodeIdx].alert)pushAlert(ROUTE[nodeIdx].alert.type,ROUTE[nodeIdx].alert.text);
+  } else {
+    btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg> Resume';
+  }
+};
+
+/* ── RAF LOOP ── */
+function tick(ts){
+  rafId=requestAnimationFrame(tick);
+  const dt=Math.min(ts-lastTick,100);lastTick=ts;
+  /* Speed inertia */
+  const tgt=simRunning?(isOffRoute?15:isRaining?30:isFastSlow?targetSpeed:targetSpeed):0;
+  speed+=(tgt-speed)*0.04;
+  /* Advance route progress */
+  if(simRunning&&!isOffRoute&&nodeIdx<ROUTE.length-1){
+    progressMs+=dt*(isFastSlow&&targetSpeed>60?1.8:1);
+    if(progressMs>=segDuration){
+      progressMs=0;
+      nodeIdx=Math.min(nodeIdx+1,ROUTE.length-1);
+      const node=ROUTE[nodeIdx];
+      showVoice(node.narration);
+      if(node.alert)setTimeout(()=>pushAlert(node.alert.type,node.alert.text),1800);
+      /* Add audit entry */
+      addAudit('Drive passed: '+node.name);
+      if(nodeIdx===ROUTE.length-1){simRunning=false;document.getElementById('simPlay').innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg> Restart';nodeIdx=0;progressMs=0;isFastSlow=false;targetSpeed=42;toast('Drive complete — Cape Tribulation reached!');}
+    }
+  }
+  drawCanvas();
+  updateNav();
+}
+
+/* ── AUDIT ── */
+function addAudit(msg){
+  const log=document.getElementById('auditLog');
+  const item=document.createElement('div');item.className='log-item';
+  const now=new Date();
+  item.innerHTML=`<span class="t">${now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span><span class="m">${msg}</span>`;
+  log.prepend(item);
+}
+
+/* ── OPEN / CLOSE DRIVE ── */
+document.getElementById('openDrive').addEventListener('click',openDrive);
+function openDrive(){
+  driveActive=true;
+  driveEl.classList.remove('hidden');
+  resizeCanvas();buildDots();
+  speed=0;nodeIdx=0;progressMs=0;simRunning=false;isOffRoute=false;isRaining=false;isFastSlow=false;
+  document.getElementById('simPlay').innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3Z"/></svg> Start drive';
+  document.getElementById('simOff').classList.remove('active');
+  document.getElementById('simRain').classList.remove('active');
+  document.getElementById('simSpeed').classList.remove('active');
+  document.getElementById('maneuver').style.background='#1a73e8';
+  document.getElementById('voiceBubble').classList.add('hidden');
+  lastTick=performance.now();
+  rafId=requestAnimationFrame(tick);
+  updateNav();
+  toast('Drive mode loaded. Press Start.');
+}
+window.closeDrive=function(){
+  driveActive=false;
+  driveEl.classList.add('hidden');
+  simRunning=false;
+  if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+};
+
+window.addEventListener('resize',()=>{if(driveActive)resizeCanvas();},{ passive:true });
+
+/* ── Presence counter flicker (cosmetic self-update) ── */
+setInterval(()=>{
+  const n=Math.random()<0.1?Math.floor(Math.random()*4):0;
+  document.getElementById('presCount').textContent=n;
+},7000);
+
+/* ── Background tasks auto-retry ── */
+const TASKS=['weather-feed','road-conditions','tide-data','hazard-relay'];
+const taskState={};
+TASKS.forEach(t=>taskState[t]={ok:false,retries:0});
+function bgRetry(name){
+  if(taskState[name].ok)return;
+  taskState[name].retries++;
+  /* Simulate intermittent success after a few retries */
+  if(taskState[name].retries>2&&Math.random()>0.4){
+    taskState[name].ok=true;
+  } else {
+    const delay=Math.min(60000,2000*Math.pow(2,taskState[name].retries));
+    setTimeout(()=>bgRetry(name),delay);
+  }
+}
+TASKS.forEach(t=>setTimeout(()=>bgRetry(t),1000+Math.random()*3000));
+
+})();
+</script>
