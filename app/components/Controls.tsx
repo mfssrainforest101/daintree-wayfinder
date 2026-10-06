@@ -166,10 +166,3 @@ export default function Controls() {
     </aside>
   )
 }
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
-import { useWayfinderStore } from '../store'
-
-const NARRATION_TEXT =
-  'Welcome to the Daintree, one of the oldest living rainforests on Earth. As we leave the Daintree Ferry, follow the road beneath the canopy and listen for the forest around you. Keep an eye out for cassowaries, especially near quiet bends and shaded clearings. At Cow Bay, take a moment to slow down and notice how the rainforest meets the sea. Further north
